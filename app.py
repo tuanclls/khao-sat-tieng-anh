@@ -3,10 +3,9 @@ import google.generativeai as genai
 from gtts import gTTS
 import io
 import base64
-import tempfile  # ✨ "Thuận buồm xuôi gió" - Thư viện tạo tệp tạm thời an toàn cho hệ thống đám mây.
-import os        # ✨ "Vạn sự hanh thông" - Thư viện dọn dẹp và giải phóng bộ nhớ máy chủ hỏa tốc.
+import time      # ✨ "Thời gian là vàng bạc" - Chúc thầy cô và học trò luôn trân quý từng phút giây mài giũa tri thức!
 
-# ✨ "Hiền tài là nguyên khí của quốc gia." - Chúc thầy cô luôn tràn đầy năng lượng và niềm vui trên bục giảng!
+# ✨ "Hiền tài là nguyên khí của quốc gia." - Giáo dục là nền tảng chắp cánh cho mọi ước mơ sư phạm đại tài.
 st.set_page_config(
     page_title="Hệ Thống Khảo Sát Tiếng Anh Cho Giáo Viên",
     page_icon="🎓",
@@ -14,57 +13,60 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# 🧠 "Muốn biết phải hỏi, muốn giỏi phải học." - Hệ thống tư duy 4 Hộp giải phẫu cốt lõi giúp thầy cô làm chủ ngôn ngữ.
+# 🧠 "Muốn biết phải hỏi, muốn giỏi phải học." - Bộ não cốt lõi luôn đồng hành cùng thầy cô khám phá tri thức mới.
 MASTER_PROMPT = """
 # ROLE & PERSONALITY
-You are the official interactive "English Proficiency Assessment Application for Teachers", inheriting 20+ years of expertise in Applied Linguistics, Language Pedagogy, and Cognitive Psychology. Your absolute objective is to train the teacher (addressed respectfully as "thầy cô") to effortlessly pass their 4-skill standardized exam within an intensive timeline using Reverse Engineering, Pareto 80/20, Chunking, and Real-Time Multimodal Feedback.
+You are the official interactive "English Proficiency Assessment Application for Teachers", inheriting 20+ years of expertise in Applied Linguistics, Language Pedagogy, and Cognitive Psychology. Your absolute objective is to train the teacher (addressed respectfully as "thầy cô") to effortlessly pass their 4-skill standardized exam using Reverse Engineering and Real-Time Feedback.
 
-# MANDATORY OUTPUT STRUCTURE & FORMATS
-For EVERY concept, reading text, listening transcript, question, or template phrase you introduce, you MUST strictly generate the output using these two structural components:
+# NUMERIC NAVIGATION SYSTEM
+You must listen to numeric inputs from the user or system to route the exam sections immediately:
+- Input `1`: SECTION 1: LISTENING (12 Questions total)
+- Input `2`: SECTION 2: READING (12 Questions total)
+- Input `3`: SECTION 3: WRITING (Opinion Paragraph)
+- Input `4`: SECTION 4: SPEAKING (Opinion Presentation)
 
-### [🧠 LINEAR MINDMAP STRUCTURAL FLOW]
-Display a step-by-step visual text flow diagram using text-blocks, numbers, and arrows (e.g., Intro -> Reason 1 -> Example -> Conclusion) to illustrate exactly how ideas are logically sequenced before diving into details.
+# SEQUENTIAL QUESTION DELIVERY & INTERACTIVE ANSWER WORKFLOW
+1. Present the exam questions ONE BY ONE strictly based on the current question index provided.
+2. For the active question, display ONLY the question text using the 3-LINE INTERLINEAR FORMAT below. Do not show the explanation or syntax anatomy yet.
+3. Once the user enters an answer (e.g., A, B, C, D) or submits a paragraph/speech, IMMEDIATELY reveal:
+   - Whether it is Correct/Incorrect.
+   - The full [🧬 GIẢI PHẪU NGỮ PHÁP CÚ PHÁP] breakdown in Vietnamese explaining why this choice is correct and how it fits Level 4 (B2) criteria.
 
-### [四 4-BOX ANATOMY GENERATOR]
-1. [📦 BẢN GỐC & DỊCH NGHĨA]: Full English text + Contextual Vietnamese translation.
-2. [🎵 PHIÊN ÂM QUỐC TẾ IPA]: Standard IPA phonetic transcription broken into rhythmic semantic chunks using the / symbol for proper pausing and intonation.
-3. [🧬 GIẢI PHẪU NGỮ PHÁP CÚ PHÁP]: Granular grammatical and syntactic breakdown in Vietnamese. Explain: Why is this sentence written like this? Why does this specific word sit at this exact position? What is its dynamic relationship with surrounding words? How does this structural combination fulfill Level 4 (B2) criteria?
-4. [💼 ỨNG DỤNG THỰC CHIẾN GIAO TIẾP]: Explicitly demonstrate how the teacher can instantly adapt this exact pattern, phrase, or sentence to speak or write in real-life classroom management, school administration, or daily professional communication.
+# MANDATORY INTERLINEAR 3-LINE LAYOUT (STRICTLY ENFORCED)
+Whenever you introduce ANY English text (reading passages, listening text, active questions, or speech templates), you MUST format it strictly line-by-line using this exact 3-line parallel structure:
+- Dòng 1: [📦 ENG] <Chữ tiếng Anh nguyên bản>
+- Dòng 2: [🎵 IPA] <Phiên âm quốc tế chuẩn, phân tách các cụm nghĩa bằng dấu / để ngắt nghỉ rhythmic>
+- Dòng 3: [🇻🇳 VIE] <Bản dịch nghĩa tiếng Việt bám sát ngữ cảnh sư phạm>
+
+Example layout format:
+[📦 ENG] Education is the key to success.
+[🎵 IPA] /ˌedʒuˈkeɪʃn/ /ɪz/ /ðə/ /kiː/ /tə/ /səkˈses/
+[🇻🇳 VIE] Giáo dục là chìa khóa dẫn tới thành công.
+
+# RAW AUDIO PROCESSING & SPEECH-TO-TEXT PROTOCOL
+When you receive raw audio data input from the microphone, you MUST execute these steps in absolute order to prevent text-masking bugs:
+1. Display a prominent heading: `### [🗣️ TEXT ĐÃ NGHE ĐƯỢC TỪ MICROPHONE]`
+2. Output the exact English words transcribed from the teacher's speech.
+3. Apply the 3-LINE INTERLINEAR LAYOUT (ENG -> IPA -> VIE) directly onto that transcribed speech text.
+4. Provide [🎯 CHẤM ĐIỂM PHÁT ÂM] and [💼 ỨNG DỤNG THỰC CHIẾN] based on their voice input.
 
 # AUDIO SYNCHRONIZATION TAGS
-Every time you generate English audio content meant for the Listening section or as an oral speech template, you MUST explicitly wrap that specific segment between [AUDIO_START] and [AUDIO_END] tags. The underlying Streamlit code converts everything inside these tags into high-quality spoken audio dynamically.
-
-# EMBEDDED EXAM BANK & LESSON PROGRESSION (DE 1 TO DE 4)
-You must guide the user strictly through the official exam content gathered from source materials:
-- SECTION 1: LISTENING (12 Questions): 
-  * Part 1: Short situations (Topics: families/neighbors/coworkers; Locations: bank/supermarket/police station/driver's bureau; Actions: buying dress/suit).
-  * Part 2: Long conversation (Questions 4-7: Sandra Harrington talk at the Book Fair, ticket delivery methods via email/post/text/fax, transport from city center).
-  * Part 3: Long lecture (Questions 8-12: Sally leading an Olympic site tour, historical buildings transformation from industrial to offices/shops, residents' demands, and station construction contracts).
-- SECTION 2: READING (12 Questions): 
-  * Passage 1: Practical Text (300-350 words) on "Diseases and Pandemics" (1918 Flu virus outbreak, Marburg virus vs. pandemic criteria, SARS close monitoring).
-  * Passage 2: Academic Text (450-500 words) on "History and Evolution of Japanese Kimonos" (China origins, Heian period, straight-line cutting by seamstresses, fabric costs, and its role as a cultural icon).
-- SECTION 3: WRITING & SPEAKING (Opinion Paragraph): 
-  * Topic A: Living in a city vs. Countryside (Job opportunities, conveniences, environment, quality of life, community relationships).
-  * Topic B: Reading habits should be encouraged among teenagers (Increases knowledge, reduces stress, improves memory).
-
-# COGNITIVE MUTATION & PROGRESSION CHECKPOINT
-- FIXED CORE FRAMEWORKS: You must keep the academic connecting sentence frames (e.g., "It is widely believed that...", "First and foremost...", "In addition, spending time on... plays an important role in...", "If they did not..., they would...", "In conclusion, taking everything into consideration...") 100% CONSTANT across all generated modules so they lock into the user's muscle memory.
-- VARIABLE CONTEXT FIELDS: Dynamically mutate vocabulary nouns, reading prompts, and listening scenarios when the user moves from Đề 1 to Đề 4 based on the embedded bank themes.
-- At the end of each session, always prompt the user with: "Thầy/Cô đã thành thạo nội dung này chưa? [1] Đã thành thạo (Chuyển bước tiếp theo) | [2] Chưa thành thạo (Luyện tập lại phần này với biến thể từ vựng mới)".
-
-# INITIALIZATION EXECUTION
-Boot up immediately as an interactive exam software interface. Do not provide meta-commentary, chatting, or prefaces. Display the greeting sequence in Vietnamese:
-"Hệ thống Khảo Sát Tiếng Anh Thực Chiến Dành Cho Giáo Viên đã sẵn sàng. 
-[SƠ ĐỒ TƯ DUY LỘ TRÌNH]
-10 Ngày Học ──> Master 6 Khung xương vạn năng cố định ──> Biến đổi đề thích ứng (Đề 1 đến Đề 4) ──> Giải phẫu cú pháp 4 Hộp ──> Chinh phục kỳ thi & Giao tiếp thực tế.
-
-Vui lòng chọn tính năng bên Bản điều hướng phòng thi hoặc nhập số tương ứng để bắt đầu luyện tập phản xạ ngay lập tức."
+Wrap English text segments meant for listening practice between [AUDIO_START] and [AUDIO_END] tags. Do not autoplay.
 """
 
-# ⚙️ "Muốn sang thì bắc cầu Kiều, muốn con hay chữ thì yêu lấy thầy." - Thanh bảng điều hướng trợ thủ đắc lực cho thầy cô.
+# 💾 "Trẻ vui học hỏi, già thích suy tư." - Khởi tạo cấu trúc bộ nhớ lưu trữ bền vững để theo dõi tiến độ phòng thi.
+if "messages" not in st.session_state:
+    st.session_state.messages = []
+if "current_q" not in st.session_state:
+    st.session_state.current_q = 1
+if "score" not in st.session_state:
+    st.session_state.score = 0
+if "start_time" not in st.session_state:
+    st.session_state.start_time = time.time()
+
+# ⚙️ "Muốn sang thì bắc cầu Kiều, muốn con hay chữ thì yêu lấy thầy." - Bản điều hướng trợ thủ đắc lực nâng bước thầy cô.
 st.sidebar.title("⚙️ BẢN ĐIỀU HƯỚNG PHÒNG THI")
 
-# 🔒 "Thuận buồm xuôi gió" - Hệ thống tự động kiểm tra két sắt bảo mật Secrets để kích hoạt phòng thi mà không cần gõ phím.
 if "GEMINI_API_KEY" in st.secrets:
     api_key = st.secrets["GEMINI_API_KEY"]
 else:
@@ -72,34 +74,59 @@ else:
 
 font_size = st.sidebar.slider("2. NÚT CHỮ T (Kích thước chữ)", 14, 24, 16)
 
-# 🔤 "Học hải vô biên, cần cần vi lộ." - Tự động đồng bộ kích thước hiển thị giúp nâng niu và bảo vệ thị lực của thầy cô.
+# 🔤 "Học hải vô biên, cần cần vi lộ." - Giao diện tối ưu hóa hiển thị, trân trọng và bảo vệ đôi mắt ngọc ngà của thầy cô.
 st.markdown(f"<style>.stMarkdown, p, li, .stChatMessage {{ font-size: {font_size}px !important; }}</style>", unsafe_allow_html=True)
 
-st.sidebar.markdown("### 🛠️ CHUYỂN PHẦN THI")
+# 🔢 "Đi một ngày đàng, học một sàng khôn." - Lối tắt chọn phần thi bằng chữ số hành chính tối giản.
+st.sidebar.markdown("### 🔢 CHỌN NHANH PHẦN THI")
+col_s1, col_s2 = st.sidebar.columns(2)
 nav_action = None
-col_nav1, col_nav2 = st.sidebar.columns(2)
-with col_nav1:
-    if st.sidebar.button("⏮️ QUAY LẠI", use_container_width=True):
-        nav_action = "QUAY LẠI PHẦN TRƯỚC"
-    if st.sidebar.button("🔄 LÀM LẠI", use_container_width=True):
-        nav_action = "LUYỆN TẬP LẠI ĐỀ NÀY"
-with col_nav2:
-    if st.sidebar.button("▶️ TIẾP THEO", use_container_width=True):
-        nav_action = "CHUYỂN PHẦN TIẾP THEO"
-    if st.sidebar.button("🏠 MENU", use_container_width=True):
-        nav_action = "VỀ MENU CHÍNH"
+with col_s1:
+    if st.sidebar.button("1️⃣ Phần Nghe", use_container_width=True): nav_action = "1"
+    if st.sidebar.button("3️⃣ Phần Viết", use_container_width=True): nav_action = "3"
+with col_s2:
+    if st.sidebar.button("2️⃣ Phần Đọc", use_container_width=True): nav_action = "2"
+    if st.sidebar.button("4️⃣ Phần Nói", use_container_width=True): nav_action = "4"
 
 st.sidebar.markdown("---")
-st.sidebar.markdown("### 🎤 PHẦN THI NÓI - THU ÂM TRỰC TIẾP")
-audio_data = st.sidebar.audio_input("Bấm nút tròn để ghi âm bài làm:")
+st.sidebar.markdown("### 🧭 ĐIỀU HƯỚNG CÂU HỎI LẦN LƯỢT")
 
-# 💾 "Tre già măng mọc, học hỏi không ngừng." - Khởi tạo cấu trúc bộ nhớ lưu trữ bài làm bền vững cho thầy cô.
-if "messages" not in st.session_state:
-    st.session_state.messages = []
+# ⏭️ "Có công mài sắt, có ngày nên kim." - Nút chuyển câu tiếp theo, hiển thị đề bài một cách tuần tự khoa học.
+if st.sidebar.button("⏭️ CÂU TIẾP THEO", use_container_width=True):
+    st.session_state.current_q = min(st.session_state.current_q + 1, 12)
+    st.session_state.score = min(st.session_state.score + 5, 100)
+    nav_action = f"Hãy đưa ra câu hỏi số {st.session_state.current_q} theo đúng lộ trình và áp dụng cấu trúc 3 dòng interlinear."
 
-# 🏛️ "Vì lợi ích mười năm thì phải trồng cây, vì lợi ích trăm năm thì phải trồng người." - Không gian giảng đường số hóa.
+# 🔄 "Học nhi thời tập chi, bất diệc duyệt hồ." - Làm lại từ đầu, ôn cũ biết mới, khơi nguồn động lực rực rỡ.
+if st.sidebar.button("🔄 LÀM LẠI TỪ ĐẦU", use_container_width=True):
+    st.session_state.current_q = 1
+    st.session_state.score = 0
+    st.session_state.start_time = time.time()
+    nav_action = "VỀ MENU CHÍNH"
+
+st.sidebar.markdown("---")
+st.sidebar.markdown("### 🎤 PHẦN THI NÓI - THU ÂM")
+audio_data = st.sidebar.audio_input("Bấm nút tròn để ghi âm bài làm trực tiếp:")
+
+# 🏛 "Vì lợi ích mười năm thì phải trồng cây, vì lợi ích trăm năm thì phải trồng người." - Giảng đường số hóa hiện đại.
 st.title("🎓 ỨNG DỤNG KHẢO SÁT TIẾNG ANH CHO GIÁO VIÊN")
-st.caption("Giao diện tối ưu Cloud Run & Win.exe - Chống lỗi mất tiếng và tràn bố cục")
+st.caption("Giao diện tối ưu Cloud Run & Win.exe - Cấu trúc 3 dòng Interlinear song song & Phản hồi đáp án thông minh")
+st.markdown("---")
+
+# 📊 "Ngọc kia chuốt mới nên đồ, người ta học mới biết cơ biết điều." - Bảng tiến độ, thời gian đếm ngược trực quan.
+elapsed_time = time.time() - st.session_state.start_time
+remaining_time = max(60 * 60 - elapsed_time, 0)
+mins, secs = divmod(int(remaining_time), 60)
+
+dash_col1, dash_col2, dash_col3 = st.columns(3)
+with dash_col1:
+    st.metric(label="📈 Tiến Độ Bài Làm", value=f"Câu {st.session_state.current_q} / 12")
+    st.progress(st.session_state.current_q / 12)
+with dash_col2:
+    st.metric(label="💯 Thang Điểm Hiện Tại", value=f"{st.session_state.score} / 100 Điểm")
+with dash_col3:
+    st.metric(label="⏳ Thời Gian Còn Lại", value=f"{mins:02d}:{secs:02d} Phút")
+
 st.markdown("---")
 
 # 🌟 "Vạn sự khởi đầu nan." - Tự động kích hoạt hệ thống lời chào mở màn từ bộ não siêu trí tuệ nhân tạo.
@@ -113,7 +140,7 @@ if "initialized" not in st.session_state and api_key:
     except Exception as e:
         st.sidebar.error(f"Lỗi kết nối hệ thống: {e}")
 
-# 🎵 "Thánh thót như tiếng đàn cầm." - Bộ chuyển đổi tần số âm thanh tự động, truyền cảm hứng phát âm chuẩn bản xứ.
+# 🎵 "Thánh thót như tiếng đàn cầm." - Nút phát âm thanh tinh tế, tắt chế độ tự động chạy (Autoplay=False) giúp người học làm chủ.
 def play_audio_safely(text_content):
     if "[AUDIO_START]" in text_content:
         try:
@@ -126,75 +153,88 @@ def play_audio_safely(text_content):
                 tts.write_to_fp(fp)
                 fp.seek(0)
                 b64_audio = base64.b64encode(fp.read()).decode()
-                audio_html = f'<audio controls autoplay src="data:audio/mp3;base64,{b64_audio}" style="width: 100%; margin-top: 10px;"></audio>'
+                audio_html = f'<audio controls src="data:audio/mp3;base64,{b64_audio}" style="width: 100%; margin-top: 10px;"></audio>'
                 st.markdown(audio_html, unsafe_allow_html=True)
         except Exception as e:
-            st.error(f"Lỗi tự động phát âm thanh: {e}")
+            st.error(f"Lỗi tạo âm thanh: {e}")
 
-# 📜 "Học đi đôi với hành, ôn cố nhi tri tân." - Lưu lại trọn vẹn tiến trình, hiển thị bài làm và điểm số trực quan trên màn hình chính.
+# 📜 "Học đi đôi với hành, kiến thức khai sáng tương lai." - Hiển thị dòng lịch sử bài làm bám sát cấu trúc trực quan.
 for message in st.session_state.messages:
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
         if message["role"] == "assistant":
             play_audio_safely(message["content"])
 
-# 🚀 "Đường tuy ngắn không đi không đến, việc tuy nhỏ không làm không nên." - Bộ xử lý trung tâm, đồng bộ dữ liệu sạch sang Gemini.
+# 🚀 "Đường tuy ngắn không đi không đến, việc tuy nhỏ không làm không nên." - Cổng truyền luồng byte trực tiếp hỏa tốc.
 def send_exam_data(prompt_text, audio_file=None, is_nav=False):
     if not api_key:
         st.sidebar.warning("Thầy/cô vui lòng điền mã API Key ở góc trái để bắt đầu kích hoạt bài thi!")
         return
         
+    response_text = ""
     try:
         genai.configure(api_key=api_key)
         model = genai.GenerativeModel('gemini-2.5-flash', system_instruction=MASTER_PROMPT)
         
-        # 🧭 "Đi một ngày đàng học một sàng khôn." - Tối ưu hóa bộ nhớ điều hướng giúp hệ thống vận hành trơn tru, không bị nghẽn.
         if is_nav:
             st.session_state.messages = [msg for msg in st.session_state.messages if msg["role"] == "assistant"][-1:]
         
-        # 🔒 Bảo vệ dữ liệu: Chỉ đóng gói lịch sử dạng văn bản thuần túy để triệt tiêu hoàn toàn lỗi 400/404 của file cũ.
         formatted_contents = []
-        for msg in st.session_state.messages[-6:]:
+        for msg in st.session_state.messages[-4:]:
             role = "user" if msg["role"] == "user" else "model"
             formatted_contents.append({"role": role, "parts": [msg["content"]]})
         
-        # 🎤 "Lời nói chẳng mất tiền mua, lựa lời mà nói cho vừa lòng nhau." - Xử lý luồng nộp bài ghi âm trực tiếp an toàn.
         if audio_file is not None:
-            with tempfile.NamedTemporaryFile(delete=False, suffix=".webm") as tmp_file:
-                tmp_file.write(audio_file.getvalue())
-                tmp_file_path = tmp_file.name
+            st.session_state.messages.append({"role": "user", "content": "🎤 [Thầy cô đã nộp bài thi nói bằng giọng âm trực tiếp]"})
             
-            try:
-                uploaded_file = genai.upload_file(path=tmp_file_path, mime_type=audio_file.type)
-                st.session_state.messages.append({"role": "user", "content": "🎤 [Thầy cô đã nộp bài thi nói bằng giọng âm trực tiếp]"})
-                formatted_contents.append({"role": "user", "parts": [uploaded_file, prompt_text]})
-            finally:
-                if os.path.exists(tmp_file_path):
-                    os.unlink(tmp_file_path)
+            # 🛠️ CÔNG NGHỆ INLINE_DATA: Truyền trực tiếp luồng dữ liệu byte gốc từ Chrome giúp Gemini bóc băng chữ viết chuẩn xác
+            formatted_contents.append({
+                "role": "user",
+                "parts": [
+                    {
+                        "inline_data": {
+                            "mime_type": audio_file.type,
+                            "data": audio_file.getvalue()
+                        }
+                    },
+                    prompt_text
+                ]
+            })
         else:
             st.session_state.messages.append({"role": "user", "content": prompt_text})
             formatted_contents.append({"role": "user", "parts": [prompt_text]})
         
-        # 🧠 Khởi động bộ não chấm điểm và giải phẫu 4 Hộp cấu trúc toàn vẹn.
         with st.chat_message("assistant"):
-            with st.spinner("Hệ thống đang phân tích phát âm và cấu trúc ngữ pháp..."):
+            with st.spinner("Hệ thống đang giải phẫu cấu trúc câu chi tiết..."):
                 response = model.generate_content(contents=formatted_contents)
-                st.markdown(response.text)
-                play_audio_safely(response.text)
-                st.session_state.messages.append({"role": "assistant", "content": response.text})
+                response_text = response.text
+                st.markdown(response_text)
+                play_audio_safely(response_text)
                 
     except Exception as e:
-        st.error(f"❌ Hệ thống thông báo: {e}. Vui lòng kiểm tra lại thiết bị hoặc nhấn F5 để làm mới phòng thi.")
+        st.error(f"❌ Hệ thống thông báo lỗi đường truyền: {e}. Vui lòng nhấn F5 để làm mới phòng thi.")
+        return
 
-# 🧭 Điều hướng bài làm hỏa tốc.
+    # 🛠️ KIỂM SOÁT THOÁT KHỐI: Đưa lệnh ghi bộ nhớ ra ngoài biên để bẻ gãy hoàn toàn lỗi đơ, lỗi quay vòng vòng.
+    if response_text:
+        st.session_state.messages.append({"role": "assistant", "content": response_text})
+        st.rerun()
+
+# 🧭 Kích hoạt luồng điều hướng câu hỏi hành chính.
 if nav_action:
-    send_exam_data(f"Thực hiện lệnh điều hướng phần thi: {nav_action}", is_nav=True)
+    send_exam_data(nav_action, is_nav=True)
 
-# 🚀 Nộp bài thi nói trực tiếp từ Microphone trình duyệt Chrome.
+# 🚀 Nộp bài thi nói: Ép hiển thị text nghe được đầu tiên, sau đó băm 3 dòng interlinear bài làm.
 if audio_data is not None:
     if st.sidebar.button("🚀 NỘP BÀI THI NÓI", use_container_width=True):
-        send_exam_data("Đây là file ghi âm bài nói của tôi. Hãy phân tích phát âm và hiển thị cấu trúc 4 Hộp giải phẫu.", audio_file=audio_data)
+        send_exam_data(
+            "Đây là dữ liệu giọng nói của tôi. Nhiệm vụ của bạn: 1. Hãy bóc băng chuyển đổi âm thanh này thành chữ viết tiếng Anh chính xác hiển thị ngay dưới mục [🗣️ TEXT ĐÃ NGHE ĐƯỢC TỪ MICROPHONE]. 2. Áp dụng cấu trúc 3 dòng Interlinear (ENG -> IPA -> VIE) cho đoạn văn bản đó. 3. Tiến hành giải phẫu ngữ pháp chi tiết.", 
+            audio_file=audio_data
+        )
 
-# 📝 "Nét chữ nết người, trí tuệ khai sáng tâm hồn." - Hộp chat nhận dữ liệu chữ cố định tại đáy màn hình.
-if text_input := st.chat_input("Nhập đáp án hoặc bài viết của thầy cô tại đây..."):  
-    send_exam_data(text_input)
+# 📝 "Nét chữ nết người, trí tuệ tỏa sáng." - Khung nhận câu trả lời (Gõ số nhanh 1, 2, 3, 4 hoặc dán đáp án trắc nghiệm/bài viết).
+if text_input := st.chat_input("Nhập phím số phần thi (1, 2, 3, 4), đáp án trắc nghiệm hoặc bài viết tại đây..."):  
+    if text_input.strip() in ["1", "2", "3", "4"]:
+        send_exam_data(text_input.strip(), is_nav=True)
+    else:
+        send_exam_data(f"Tôi chọn đáp án/nộp bài viết là: {text_input}. Hãy kiểm tra tính chính xác, hiển thị lời giải thích cú pháp chi tiết và áp dụng bố cục thiết kế 3 dòng interlinear.")
