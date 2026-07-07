@@ -3,6 +3,8 @@ import google.generativeai as genai
 from gtts import gTTS
 import io
 import base64
+import tempfile  # 🛠️ Lời chúc "Thuận buồm xuôi gió" - Thư viện tạo file tạm thời an toàn
+import os        # 🛠️ Lời chúc "Vạn sự hanh thông" - Thư viện dọn dẹp bộ nhớ hệ thống
 
 # ✨ "Hiền tài là nguyên khí của quốc gia." - Chúc thầy cô một ngày lên lớp tràn đầy năng lượng và niềm vui sư phạm!
 st.set_page_config(
@@ -61,11 +63,13 @@ Vui lòng chọn tính năng bên Bản điều hướng phòng thi hoặc nhậ
 
 # ⚙️ "Muốn sang thì bắc cầu Kiều, muốn con hay chữ thì yêu lấy thầy." - Thanh công cụ điều hướng thông minh hỗ trợ thầy cô làm chủ phòng thi.
 st.sidebar.title("⚙️ BẢN ĐIỀU HƯỚNG PHÒNG THI")
-# ✨ "Thuận buồm xuôi gió" - Tự động gọi mã Key bảo mật từ hệ thống để thầy cô không phải nhập tay mỗi lần mở app
+
+# 🔒 "Thuận buồm xuôi gió" - Tự động gọi mã Key bảo mật từ hệ thống Secrets để thầy cô không phải nhập tay mỗi lần mở app
 if "GEMINI_API_KEY" in st.secrets:
     api_key = st.secrets["GEMINI_API_KEY"]
 else:
     api_key = st.sidebar.text_input("1. Nhập Gemini API Key:", type="password")
+
 font_size = st.sidebar.slider("2. NÚT CHỮ T (Kích thước chữ)", 14, 24, 16)
 
 # 🔤 "Chữ nổi trí thông, lòng sáng trí suốt." - Tự động tối ưu hóa kích thước hiển thị giúp bảo vệ đôi mắt ngọc ngà của thầy cô.
@@ -151,21 +155,33 @@ def send_exam_data(payload):
                 play_audio_safely(res.text)
                 st.session_state.messages.append({"role": "assistant", "content": res.text})
     else:
-        st.sidebar.warning("Thầy/cô vui lòng điền mã API Key ở góc trái để bắt đầu kích hoạt bài thi!")
+        st.sidebar.warning("Thầy/cô vui lòng điền mã API Key ở góc trái hoặc cấu hình Secrets để bắt đầu kích hoạt bài thi!")
 
 # 🧭 "Đi một ngày đàng, học một sàng khôn." - Lắng nghe mệnh lệnh từ thanh điều hướng để uyển chuyển chuyển dịch qua các mô-đun bài tập.
 if nav_action:
     send_exam_data(f"Thực hiện lệnh điều hướng phần thi: {nav_action}")
 
-# 🚀 "Có công mài sắt, có ngày nên kim." - Nạp dữ liệu sóng âm động từ Chrome, bẻ gãy mọi lỗi nghẽn định dạng để AI bóc tách phát âm 4 Hộp chuẩn xác.
+# 🎤 "Chim khôn kêu tiếng rảnh rang, người khôn nói tiếng dịu dàng dễ nghe." - Giải mã sóng âm qua Google File API, bẻ gãy mọi lỗi nghẽn định dạng Chrome.
 if audio_data is not None:
     if st.sidebar.button("🚀 NỘP BÀI THI NÓI", use_container_width=True):
         bytes_data = audio_data.getvalue()
-        audio_payload = {
-            "mime_type": audio_data.type,  
-            "data": bytes_data
-        }
-        send_exam_data([audio_payload, "Đây là file ghi âm bài nói của tôi. Hãy phân tích phát âm và hiển thị cấu trúc 4 Hộp giải phẫu."])
+        
+        # 🛠️ Tạo một file tạm thời trên hệ thống đám mây để gói dữ liệu Chrome gửi lên
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".webm") as tmp_file:
+            tmp_file.write(bytes_data)
+            tmp_file_path = tmp_file.name
+        
+        try:
+            # 🛠️ Tải thẳng file lên Google File API - Cổng lưu trữ chuyên trị định dạng ghi âm phức tạp
+            uploaded_file = genai.upload_file(path=tmp_file_path, mime_type=audio_data.type)
+            
+            # 🛠️ Gửi file đã được Google mã hóa thành công kèm câu lệnh phân tích 4 Hộp giải phẫu
+            send_exam_data([uploaded_file, "Đây là file ghi âm bài nói của tôi. Hãy phân tích phát âm và hiển thị cấu trúc 4 Hộp giải phẫu."])
+            
+            # 🛠️ Giải phóng bộ nhớ máy chủ ngay lập tức sau khi gửi bài thành công
+            os.unlink(tmp_file_path)
+        except Exception as e:
+            st.sidebar.error(f"Lỗi xử lý luồng âm thanh đám mây: {e}")
 
 # 📝 "Chữ viết là tiếng nói của tâm hồn và trí tuệ." - Hộp thoại tương tác chữ cố định tại đáy màn hình, luôn sẵn sàng đón nhận những ý tưởng xuất sắc của thầy cô.
 if text_input := st.chat_input("Nhập đáp án hoặc bài viết của thầy cô tại đây..."):  
