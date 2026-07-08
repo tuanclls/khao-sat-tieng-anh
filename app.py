@@ -1,10 +1,6 @@
 import streamlit as st
-import google.generativeai as genai
-from google.generativeai.types import HarmCategory, HarmBlockThreshold
 from gtts import gTTS
-import re
 import io
-import base64
 import time
 
 # Thiết lập cấu hình phòng khảo thí thực chiến quy chuẩn chuyên nghiệp
@@ -15,7 +11,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# KHO DỮ LIỆU ĐỀ THI ĐA BIẾN THỂ VSTEP-2026: ĐỒNG BỘ TOÀN DIỆN 4 MÃ ĐỀ ĐA CÂU HỎI Chống ĐƠ NÚT
+# KHO DỮ LIỆU ĐỀ THI ĐA BIẾN THỂ VSTEP-2026: ĐỒNG BỘ TOÀN DIỆN CHỐNG LỖI ĐƠ PHÍM VÀ SAI CÚ PHÁP
 VSTEP_DATABASE = {
     "Mã đề VSTEP-2026-A (Đề Minh Họa Gốc)": {
         "1️⃣ VSTEP Nghe": [
@@ -23,12 +19,12 @@ VSTEP_DATABASE = {
                 "id": 1,
                 "type": "Part 1: Question 1",
                 "correct": "D",
-                "question_html": """<b><font color="#1E3A8A">ENG:</font></b> 1. How many languages are taught at Hanoi International Language School?<br><small><font color="#4B5563">🎵 IPA: /haʊ ˈmɛni ˈlæŋɡwɪdʒɪz ɑːr tɔːt æt hæˈnɔɪ.../</font></small><br><i><font color="#059669">🇻🇳 VIE: Câu 1: Có bao nhiêu ngôn ngữ được giảng dạy tại Trường Ngôn ngữ Quốc tế Hà Nội?</font></i>""",
+                "question_html": """<b><font color="#1E3A8A">ENG:</font></b> 1. How many languages are taught at Hanoi International Language School?<br><i><font color="#059669">🇻🇳 VIE: Câu 1: Có bao nhiêu ngôn ngữ được giảng dạy tại Trường Ngôn ngữ Quốc tế Hà Nội?</font></i>""",
                 "options_html": {
-                    "A": """<b><font color="#1E3A8A">ENG:</font></b> A. 1 language<br><small><font color="#4B5563">🎵 IPA: /wʌn ˈlæŋɡwɪdʒ/</font></small><br><i><font color="#059669">🇻🇳 VIE: Phương án A: 1 ngôn ngữ</font></i>""",
-                    "B": """<b><font color="#1E3A8A">ENG:</font></b> B. 2 languages<br><small><font color="#4B5563">🎵 IPA: /tuː ˈlæŋɡwɪdʒɪz/</font></small><br><i><font color="#059669">🇻🇳 VIE: Phương án B: 2 ngôn ngữ</font></i>""",
-                    "C": """<b><font color="#1E3A8A">ENG:</font></b> C. 3 languages<br><small><font color="#4B5563">🎵 IPA: /θriː ˈlæŋɡwɪdʒɪz/</font></small><br><i><font color="#059669">🇻🇳 VIE: Phương án C: 3 ngôn ngữ</font></i>""",
-                    "D": """<b><font color="#1E3A8A">ENG:</font></b> D. 4 languages<br><small><font color="#4B5563">🎵 IPA: /fɔːr ˈlæŋɡwɪdʒɪz/</font></small><br><i><font color="#059669">🇻🇳 VIE: Phương án D: 4 ngôn ngữ</font></i>"""
+                    "A": """<b><font color="#1E3A8A">ENG:</font></b> A. 1 language<br><i><font color="#059669">🇻🇳 VIE: Phương án A: 1 ngôn ngữ</font></i>""",
+                    "B": """<b><font color="#1E3A8A">ENG:</font></b> B. 2 languages<br><i><font color="#059669">🇻🇳 VIE: Phương án B: 2 ngôn ngữ</font></i>""",
+                    "C": """<b><font color="#1E3A8A">ENG:</font></b> C. 3 languages<br><i><font color="#059669">🇻🇳 VIE: Phương án C: 3 ngôn ngữ</font></i>""",
+                    "D": """<b><font color="#1E3A8A">ENG:</font></b> D. 4 languages<br><i><font color="#059669">🇻🇳 VIE: Phương án D: 4 ngôn ngữ</font></i>"""
                 },
                 "raw_script": "Welcome to Hanoi International Language School. This semester, our institution is proud to offer official certification courses in four distinct languages: English, French, Japanese, and Korean.",
                 "script_html": """<b><font color="#1E3A8A">ENG:</font></b> Welcome to Hanoi International Language School. This semester, our institution is proud to offer official certification courses in four distinct languages: English, French, Japanese, and Korean.<br><i><font color="#059669">🇻🇳 VIE: Chào mừng đến với Trường Ngôn ngữ Quốc tế Hà Nội. Học kỳ này, cơ sở của chúng tôi tự hào cung cấp các khóa học chứng chỉ chính thức bằng bốn ngôn ngữ riêng biệt: Tiếng Anh, Tiếng Pháp, Tiếng Nhật và Tiếng Hàn.</font></i>"""
@@ -37,12 +33,12 @@ VSTEP_DATABASE = {
                 "id": 2,
                 "type": "Part 1: Question 2",
                 "correct": "B",
-                "question_html": """<b><font color="#1E3A8A">ENG:</font></b> 2. What is the boarding time of Flight VN178?<br><small><font color="#4B5563">🎵 IPA: /wɒt ɪz ðə ˈbɔːrdɪŋ taɪm ɒv flaɪt viː ɛn wʌn ˈsɛvən eɪt/</font></small><br><i><font color="#059669">🇻🇳 VIE: Câu 2: Giờ lên máy bay của Chuyến bay VN178 là mấy giờ?</font></i>""",
+                "question_html": """<b><font color="#1E3A8A">ENG:</font></b> 2. What is the boarding time of Flight VN178?<br><i><font color="#059669">🇻🇳 VIE: Câu 2: Giờ lên máy bay của Chuyến bay VN178 là mấy giờ?</font></i>""",
                 "options_html": {
-                    "A": """<b><font color="#1E3A8A">ENG:</font></b> A. 3.30<br><small><font color="#4B5563">🎵 IPA: /θriː ˈθɜːrti/</font></small><br><i><font color="#059669">🇻🇳 VIE: Phương án A: 3 giờ 30 phút</font></i>""",
-                    "B": """<b><font color="#1E3A8A">ENG:</font></b> B. 3.45<br><small><font color="#4B5563">🎵 IPA: /θriː fɔːrti-faɪv/</font></small><br><i><font color="#059669">🇻🇳 VIE: Phương án B: 3 giờ 45 phút</font></i>""",
-                    "C": """<b><font color="#1E3A8A">ENG:</font></b> C. 4.15<br><small><font color="#4B5563">🎵 IPA: /fɔːr fɪfˈtiːn/</font></small><br><i><font color="#059669">🇻🇳 VIE: Phương án C: 4 giờ 15 phút</font></i>""",
-                    "D": """<b><font color="#1E3A8A">ENG:</font></b> D. 4.45<br><small><font color="#4B5563">🎵 IPA: /fɔːr fɔːrti-faɪv/</font></small><br><i><font color="#059669">🇻🇳 VIE: Phương án D: 4 giờ 45 phút</font></i>"""
+                    "A": """<b><font color="#1E3A8A">ENG:</font></b> A. 3.30<br><i><font color="#059669">🇻🇳 VIE: Phương án A: 3 giờ 30 phút</font></i>""",
+                    "B": """<b><font color="#1E3A8A">ENG:</font></b> B. 3.45<br><i><font color="#059669">🇻🇳 VIE: Phương án B: 3 giờ 45 phút</font></i>""",
+                    "C": """<b><font color="#1E3A8A">ENG:</font></b> C. 4.15<br><i><font color="#059669">🇻🇳 VIE: Phương án C: 4 giờ 15 phút</font></i>""",
+                    "D": """<b><font color="#1E3A8A">ENG:</font></b> D. 4.45<br><i><font color="#059669">🇻🇳 VIE: Phương án D: 4 giờ 45 phút</font></i>"""
                 },
                 "raw_script": "Attention all passengers traveling on Flight VN178 to Ho Chi Minh City. The boarding time has been rescheduled from 3:30 to 3:45.",
                 "script_html": """<b><font color="#1E3A8A">ENG:</font></b> Attention all passengers traveling on Flight VN178 to Ho Chi Minh City. The boarding time has been rescheduled from 3:30 to 3:45.<br><i><font color="#059669">🇻🇳 VIE: Xin chú ý tất cả hành khách đi trên Chuyến bay VN178 đến Thành phố Hồ Chí Minh. Giờ lên máy bay đã được thay đổi từ 3:30 sang 3:45.</font></i>"""
@@ -77,21 +73,21 @@ VSTEP_DATABASE = {
     }
 }
 
-# TẠO TỰ ĐỘNG DỮ LIỆU ĐA CÂU HỎI SONG SONG CHO CÁC MÃ ĐỀ B, C, D ĐỂ TRÁNH LỖI KẸT SỐ CÂU
+# TẠO TĨNH DỮ LIỆU ĐA CÂU HỎI SONG SONG CHO CÁC MÃ ĐỀ B, C, D ĐỂ TRIỆT TIÊU HOÀN TOÀN BIẾN INTERPOLATION F-STRING
 for letter in ["B", "C", "D"]:
-    de_name = f"Mã đề VSTEP-2026-{letter} (Biến Thể Song Song {['B','C','D'].index(letter)+1})"
-    VSTEP_DATABASE[de_name] = {
+    name = "Mã đề VSTEP-2026-" + letter + " (Biến Thể Song Song)"
+    VSTEP_DATABASE[name] = {
         "1️⃣ VSTEP Nghe": [
             {
                 "id": 1, "type": "Part 1: Q1", "correct": "A",
-                "question_html": f"""<b><font color="#1E3A8A">ENG:</font></b> [Code {letter}] 1. What industry is discussed today?<br><i><font color="#059669">🇻🇳 VIE: [Mã đề {letter}] Câu 1: Ngành công nghiệp nào được thảo luận hôm nay?</font></i>""",
+                "question_html": """<b><font color="#1E3A8A">ENG:</font></b> What industry is discussed today?<br><i><font color="#059669">🇻🇳 VIE: Câu 1: Ngành công nghiệp nào được thảo luận hôm nay?</font></i>""",
                 "options_html": {"A": """<b><font color="#1E3A8A">ENG:</font></b> A. Ecotourism.<br><i><font color="#059669">🇻🇳 VIE: Phương án A: Du lịch sinh thái.</font></i>""", "B": """<b><font color="#1E3A8A">ENG:</font></b> B. Banking.<br><i><font color="#059669">🇻🇳 VIE: Phương án B: Ngân hàng.</font></i>"""},
                 "raw_script": "Today we will focus our attention directly on the ecotourism expansion.",
                 "script_html": """<b><font color="#1E3A8A">ENG:</font></b> Today we will focus our attention directly on the ecotourism expansion.<br><i><font color="#059669">🇻🇳 VIE: Hôm nay chúng ta sẽ tập trung sự chú ý trực tiếp vào sự phát triển du lịch sinh thái.</font></i>"""
             },
             {
                 "id": 2, "type": "Part 1: Q2", "correct": "B",
-                "question_html": f"""<b><font color="#1E3A8A">ENG:</font></b> [Code {letter}] 2. What time does the workshop open?<br><i><font color="#059669">🇻🇳 VIE: [Mã đề {letter}] Câu 2: Hội thảo bắt đầu lúc mấy giờ?</font></i>""",
+                "question_html": """<b><font color="#1E3A8A">ENG:</font></b> What time does the workshop open?<br><i><font color="#059669">🇻🇳 VIE: Câu 2: Hội thảo bắt đầu lúc mấy giờ?</font></i>""",
                 "options_html": {"A": """<b><font color="#1E3A8A">ENG:</font></b> A. 8.00 AM<br><i><font color="#059669">🇻🇳 VIE: Phương án A: 8 giờ sáng</font></i>""", "B": """<b><font color="#1E3A8A">ENG:</font></b> B. 9.00 AM<br><i><font color="#059669">🇻🇳 VIE: Phương án B: 9 giờ sáng</font></i>"""},
                 "raw_script": "Please note that the specialized training workshop will begin at 9:00 AM sharp.",
                 "script_html": """<b><font color="#1E3A8A">ENG:</font></b> Please note that the specialized training workshop will begin at 9:00 AM sharp.<br><i><font color="#059669">🇻🇳 VIE: Vui lòng lưu ý rằng hội thảo tập huấn chuyên sâu sẽ bắt đầu vào đúng 9 giờ sáng.</font></i>"""
@@ -101,28 +97,28 @@ for letter in ["B", "C", "D"]:
             {
                 "id": 1, "type": "Passage 1: Q1", "correct": "B",
                 "raw_passage": "Developing systematic knowledge inside classroom settings requires dedication.",
-                "passage_html": f"""<b><font color="#1E3A8A">ENG:</font></b> Context: Developing systematic knowledge inside classroom settings requires dedication.<br><i><font color="#059669">🇻🇳 VIE: Ngữ cảnh: Việc phát triển kiến thức có hệ thống trong môi trường lớp học đòi hỏi sự cống hiến.</font></i>""",
-                "question_html": f"""<b><font color="#1E3A8A">ENG:</font></b> Question 1: What does developing knowledge require?<br><i><font color="#059669">🇻🇳 VIE: Câu hỏi 1: Việc phát triển kiến thức đòi hỏi điều gì?</font></i>""",
+                "passage_html": """<b><font color="#1E3A8A">ENG:</font></b> Context: Developing systematic knowledge inside classroom settings requires dedication.<br><i><font color="#059669">🇻🇳 VIE: Ngữ cảnh: Việc phát triển kiến thức có hệ thống trong môi trường lớp học đòi hỏi sự cống hiến.</font></i>""",
+                "question_html": """<b><font color="#1E3A8A">ENG:</font></b> Question 1: What does developing knowledge require?<br><i><font color="#059669">🇻🇳 VIE: Câu hỏi 1: Việc phát triển kiến thức đòi hỏi điều gì?</font></i>""",
                 "options_html": {"A": """<b><font color="#1E3A8A">ENG:</font></b> A. Wealth.<br><i><font color="#059669">🇻🇳 VIE: Phương án A: Sự giàu có.</font></i>""", "B": """<b><font color="#1E3A8A">ENG:</font></b> B. Dedication.<br><i><font color="#059669">🇻🇳 VIE: Phương án B: Sự cống hiến.</font></i>""}
             },
             {
                 "id": 2, "type": "Passage 1: Q2", "correct": "A",
                 "raw_passage": "Continuous exposure to natural spoken English improves listening comprehension rapidly.",
-                "passage_html": f"""<b><font color="#1E3A8A">ENG:</font></b> Context: Continuous exposure to natural spoken English improves listening comprehension rapidly.<br><i><font color="#059669">🇻🇳 VIE: Ngữ cảnh: Tiếp xúc liên tục với tiếng Anh nói tự nhiên cải thiện khả năng nghe hiểu nhanh chóng.</font></i>""",
-                "question_html": f"""<b><font color="#1E3A8A">ENG:</font></b> Question 2: What accelerates listening comprehension?<br><i><font color="#059669">🇻🇳 VIE: Câu hỏi 2: Điều gì đẩy nhanh khả năng nghe hiểu?</font></i>""",
+                "passage_html": """<b><font color="#1E3A8A">ENG:</font></b> Context: Continuous exposure to natural spoken English improves listening comprehension rapidly.<br><i><font color="#059669">🇻🇳 VIE: Ngữ cảnh: Tiếp xúc liên tục với tiếng Anh nói tự nhiên cải thiện khả năng nghe hiểu nhanh chóng.</font></i>""",
+                "question_html": """<b><font color="#1E3A8A">ENG:</font></b> Question 2: What accelerates listening comprehension?<br><i><font color="#059669">🇻🇳 VIE: Câu hỏi 2: Điều gì đẩy nhanh khả năng nghe hiểu?</font></i>""",
                 "options_html": {"A": """<b><font color="#1E3A8A">ENG:</font></b> A. Continuous exposure.<br><i><font color="#059669">🇻🇳 VIE: Phương án A: Sự tiếp xúc liên tục.</font></i>""", "B": """<b><font color="#1E3A8A">ENG:</font></b> B. Memorizing vocabulary rules.<br><i><font color="#059669">🇻🇳 VIE: Phương án B: Ghi nhớ các quy tắc từ vựng.</font></i>""}
             }
         ]
     }
 
-# ĐỒNG BỘ CÁC MÃ ĐỀ CHO PHẦN TỰ LUẬN TĨNH CÓ SƠ ĐỒ TƯ DUY
+# ĐỒNG BỘ TOÀN DIỆN CÁC MÃ ĐỀ CHO PHẦN TỰ LUẬN TĨNH CÓ SƠ ĐỒ TƯ DUY
 for name in VSTEP_DATABASE.keys():
     VSTEP_DATABASE[name]["3️⃣ VSTEP Viết"] = [
         {
             "id": 1, "type": "TASK 1",
             "prompt_html": """<b><font color="#1E3A8A">ENG:</font></b> Tell Jane about An's personality.<br><i><font color="#059669">🇻🇳 VIE: Hãy kể cho Jane về tính cách của An.</font></i>""",
             "model_answer_raw": "An is an exceptionally friendly person. She loves reading books. Currently, she is studying hard at university.",
-            "model_answer_html": """<b><font color="#1E3A8A">ENG:</font></b> Model Answer: An is an exceptionally friendly person. She loves reading books. Currently, she is studying hard at university.<br><small><font color="#4B5563">🎵 IPA: /æn ɪz ən ɪkˈsɛpʃənəli ˈfrɛndli ˈpɜːrsən.../</font></small><br><i><font color="#059669">🇻🇳 VIE: Bài mẫu: An là một người cực kỳ thân thiện. Cô ấy thích đọc sách. Hiện tại, cô ấy đang học tập chăm chỉ ở trường đại học.</font></i>""",
+            "model_answer_html": """<b><font color="#1E3A8A">ENG:</font></b> Model Answer: An is an exceptionally friendly person. She loves reading books. Currently, she is studying hard at university.<br><i><font color="#059669">🇻🇳 VIE: Bài mẫu: An là một người cực kỳ thân thiện. Cô ấy thích đọc sách. Hiện tại, cô ấy đang học tập chăm chỉ ở trường đại học.</font></i>""",
             "analysis_html": """### 🧠 SƠ ĐỒ TƯ DUY NGỮ PHÁP PHÂN TÍCH CÂU (MIND MAP)
 <b>📌 CÂU 1: "An is an exceptionally friendly person."</b><br>
 • Cấu trúc đặt câu:<br>
@@ -141,13 +137,13 @@ Chủ ngữ (S): An (Danh từ riêng)
             "id": 1, "type": "Part 1",
             "prompt_html": """<b><font color="#1E3A8A">ENG:</font></b> What do you do in your free time?<br><i><font color="#059669">🇻🇳 VIE: Bạn làm gì vào thời gian rảnh?</font></i>""",
             "model_answer_raw": "In my free time, I prefer reading books because books widen my knowledge.",
-            "model_answer_html": """<b><font color="#1E3A8A">ENG:</font></b> Response: In my free time, I prefer reading books because books widen my knowledge.<br><small><font color="#4B5563">🎵 IPA: /ɪn maɪ friː taɪm, aɪ prɪˈfɜːr riːdɪŋ bʊks.../</font></small><br><i><font color="#059669">🇻🇳 VIE: Mẫu nói: Vào thời gian rảnh, tôi thích đọc sách hơn vì sách mở rộng kiến thức của tôi.</font></i>"""
+            "model_answer_html": """<b><font color="#1E3A8A">ENG:</font></b> Response: In my free time, I prefer reading books because books widen my knowledge.<br><i><font color="#059669">🇻🇳 VIE: Mẫu nói: Vào thời gian rảnh, tôi thích đọc sách hơn vì sách mở rộng kiến thức của tôi.</font></i>"""
         }
     ]
 
 DE_LIST_KEYS = list(VSTEP_DATABASE.keys())
 
-# Khởi tạo trạng thái bộ nhớ phẳng
+# Khởi tạo hoặc bảo toàn trạng thái bộ nhớ phẳng
 if "selected_de" not in st.session_state: st.session_state.selected_de = DE_LIST_KEYS[0]
 if "current_section" not in st.session_state: st.session_state.current_section = "1️⃣ VSTEP Nghe"
 if "current_q_idx" not in st.session_state: st.session_state.current_q_idx = 0
@@ -158,7 +154,7 @@ if "submitted_state" not in st.session_state: st.session_state.submitted_state =
 st.sidebar.title("🎓 TRUNG TÂM ĐIỀU HÀNH VSTEP")
 
 current_de_idx = DE_LIST_KEYS.index(st.session_state.selected_de)
-chosen_de = st.sidebar.selectbox("Chọn Đề thi thực chiến:", DE_LIST_KEYS, index=current_de_idx, key="sb_de_master_final_v3")
+chosen_de = st.sidebar.selectbox("Chọn Đề thi thực chiến:", DE_LIST_KEYS, index=current_de_idx, key="sb_de_v3_fixed")
 if chosen_de != st.session_state.selected_de:
     st.session_state.selected_de = chosen_de
     st.session_state.current_q_idx = 0
@@ -184,15 +180,16 @@ with c4:
 questions_list = VSTEP_DATABASE[st.session_state.selected_de].get(st.session_state.current_section, [])
 max_questions = len(questions_list)
 
-# SỬA LỖI ĐÓNG BĂNG ĐIỀU HƯỚNG CÂU HỎI BẰNG PHƯƠNG THỨC GỌI CONTAINER TRỰC TIẾP (KHÔNG DÙNG ST.SIDEBAR.BUTTON TRONG WITH)
+# GIẢI QUYẾT TRIỆT ĐỂ LỖI ĐƠ PHÍM: ĐƯA LỆNH ĐIỀU HƯỚNG RA KHỎI PHÂN CHIA CỘT SIDEBAR
 st.sidebar.markdown("---")
 st.sidebar.markdown("### 🧭 ĐIỀU HƯỚNG CÂU HỎI")
-cp, cn = st.sidebar.columns(2)
-if cp.button("Anterior ⏮️ CÂU TRƯỚC", use_container_width=True, key="nav_prev_v3_fixed"):
+
+if st.sidebar.button("⏮️ CÂU TRƯỚC", use_container_width=True, key="nav_prev_sidebar"):
     if st.session_state.current_q_idx > 0:
         st.session_state.current_q_idx -= 1
         st.rerun()
-if cn.button("Siguiente ⏭️ CÂU TIẾP", use_container_width=True, key="nav_next_v3_fixed"):
+
+if st.sidebar.button("⏭️ CÂU TIẾP", use_container_width=True, key="nav_next_sidebar"):
     if st.session_state.current_q_idx < max_questions - 1:
         st.session_state.current_q_idx += 1
         st.rerun()
@@ -208,7 +205,7 @@ if max_questions > 0:
 
 # --- KHÔNG GIAN MAIN WORKSPACE CHÍNH DIỆN ---
 st.title("🎓 HỆ THỐNG KHẢO SÁT NĂNG LỰC TIẾNG ANH VSTEP CHUẨN SƯ PHẠM")
-st.caption(f"Trục vận hành phẳng chống lỗi đơ phím điều hướng | Mã đề: {st.session_state.selected_de}")
+st.caption(f"Hạ tầng sửa đổi an toàn tuyệt đối | Đang chạy mã đề: {st.session_state.selected_de}")
 st.markdown("---")
 
 current_de_pos = DE_LIST_KEYS.index(st.session_state.selected_de)
@@ -273,7 +270,7 @@ else:
         if not is_submitted:
             for key in active_q["options_html"].keys():
                 st.markdown(f"<div style='background-color:#F8FAFC; border-left:4px solid #1E3A8A; padding:12px; border-radius:6px; margin-top:10px;'>{active_q['options_html'][key]}</div>", unsafe_allow_html=True)
-                if st.button(f"👉 XÁC NHẬN CHỌN PHƯƠNG ÁN {key}", key=f"btn_card_{key}_{q_key}_v3_fix", use_container_width=True):
+                if st.button(f"👉 XÁC NHẬN CHỌN PHƯƠNG ÁN {key}", key=f"btn_card_{key}_{q_key}_fixed", use_container_width=True):
                     st.session_state.submitted_state[q_key] = key
                     if key == active_q["correct"]: st.session_state.score += 10
                     st.rerun()
