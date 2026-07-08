@@ -15,7 +15,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# KHO DỮ LIỆU ĐỀ THI ĐA BIẾN THỂ VSTEP-2026: ĐỒNG BỘ 4 MÃ ĐỀ (A, B, C, D) ĐẦY ĐỦ ĐÁP ÁN MẪU
+# KHO DỮ LIỆU ĐỀ THI ĐA BIẾN THỂ VSTEP-2026: ĐỒNG BỘ 4 MÃ ĐỀ (A, B, C, D) ĐẦY ĐỦ ĐÁP ÁN MẪU KHÓA TRƯỚC
 VSTEP_MASTER_DATABASE = {
     "Mã đề VSTEP-2026-A (Đề Minh Họa Gốc)": {
         "1️⃣ VSTEP Nghe": [
@@ -69,7 +69,7 @@ VSTEP_MASTER_DATABASE = {
 <small><font color="#4B5563">🎵 IPA: /wɒt bɛst ˈpærəfreɪzɪz ðə ˈsɛntəns?/</font></small><br>
 <i><font color="#059669">🇻🇳 VIE: Câu hỏi 1: Câu nào diễn đạt lại tốt nhất nhận định về lộ trình hàng ngày của nhân vật?</font></i>""",
                 "options_html": {
-                    "A": """<b><font color="#1E3A8A">ENG:</font></b> A. Normally, I will take a business person and a drunk at the airport.<br><small><font color="#4B5563">🎵 IPA: /ˈnɔːrməli, maɪ fɜːrst ˈpæsɪndʒər wɪl biː.../</font></small><br><i><font color="#059669">🇻🇳 VIE: Phương án A: Thông thường, tôi đón doanh nhân và người say ở sân bay.</font></i>""",
+                    "A": """<b><font color="#1E3A8A">ENG:</font></b> A. Normally, I will take a business person and a drunk at the airport.<br><small><font color="#4B5563">🎵 IPA: /.../</font></small><br><i><font color="#059669">🇻🇳 VIE: Phương án A: Thông thường, tôi đón doanh nhân và người say ở sân bay.</font></i>""",
                     "B": """<b><font color="#1E3A8A">ENG:</font></b> B. Normally, I will go to the airport in the morning and come back with a drunk.<br><small><font color="#4B5563">🎵 IPA: /.../ </font></small><br><i><font color="#059669">🇻🇳 VIE: Phương án B: Thông thường, tôi ra sân bay buổi sáng và về với người say.</font></i>""",
                     "C": """<b><font color="#1E3A8A">ENG:</font></b> C. Normally, my first passenger will be a businessman and my last one a drunk.<br><small><font color="#4B5563">🎵 IPA: /.../ </font></small><br><i><font color="#059669">🇻🇳 VIE: Phương án C: Thông thường, hành khách đầu tiên là doanh nhân và người cuối cùng là người say.</font></i>""",
                     "D": """<b><font color="#1E3A8A">ENG:</font></b> D. Normally, I will drive a businessman to the airport and come back almost drunk.<br><small><font color="#4B5563">🎵 IPA: /.../ </font></small><br><i><font color="#059669">🇻🇳 VIE: Phương án D: Thông thường, tôi chở doanh nhân ra sân bay và quay về trong tình trạng gần như say.</font></i>"""
@@ -205,20 +205,20 @@ VSTEP_MASTER_DATABASE = {
     }
 }
 
-# CHỒNG BỔ SUNG CÁC PHÂN HỆ TỰ LUẬN CHỨA ĐÁP ÁN MẪU TOÀN DIỆN CHO NGƯỜI HỌC HỌC THUỘC LÒNG
+# CHỒNG BỔ SUNG CÁC PHÂN HỆ TỰ LUẬN CHỨA ĐÁP ÁN MẪU TĨNH - HIỂN THỊ NGAY KHÔNG CẦN CHỜ NỘP BÀI
 for de_name in VSTEP_MASTER_DATABASE.keys():
     VSTEP_MASTER_DATABASE[de_name]["3️⃣ VSTEP Viết"] = [
         {
             "id": 1,
             "type": "Task 1: Informal Email Reply (120 words)",
             "prompt_html": """<b><font color="#1E3A8A">ENG:</font></b> Prompt: Write an informal email responding to Jane. Tell her about your friend An (personality, hobbies, current study or work status) to check if she fits in with Jane's family in London.<br>
-<small><font color="#4B5563">🎵 IPA: /raɪt ən ɪnˈfɔːrməl ˈiːmeɪl rɪˈspɒndɪŋ tuː dʒeɪn.../</font></small><br>
+<small><font color="#4B5563">🎵 IPA: /raɪt ân ɪnˈfɔːrməl ˈiːmeɪl rɪˈspɒndɪŋ tuː dʒeɪn.../</font></small><br>
 <i><font color="#059669">🇻🇳 VIE: Đề bài: Viết một email thân mật trả lời Jane. Hãy kể cho cô ấy nghe về người bạn tên An (tính cách, sở thích, tình trạng học tập hoặc làm việc hiện tại) để xem cô ấy có phù hợp ở cùng gia đình Jane tại Luân Đôn không.</font></i>""",
             "model_answer_raw": "Dear Jane, I am writing to tell you that An is a wonderful person. She is extremely friendly, helpful, and highly responsible. In her free time, she loves reading books and cooking Vietnamese traditional food, which your family will definitely enjoy. Currently, she is studying hard as a final-year student at university. I am sure she will be a great fit for your home. Best, Nguyen.",
             "model_answer_html": """<b><font color="#1E3A8A">ENG:</font></b> Model Answer: Dear Jane, I am writing to tell you that An is a wonderful person. She is extremely friendly, helpful, and highly responsible. In her free time, she loves reading books and cooking Vietnamese traditional food, which your family will definitely enjoy. Currently, she is studying hard as a final-year student at university. I am sure she will be a great fit for your home. Best, Nguyen.<br>
 <small><font color="#4B5563">🎵 IPA: /dɪər dʒeɪn, maɪ frɛnd æn ɪz ə ˈwʌndərfʊl ˈpɜːrsən. ʃiː ɪz ɪksˈtriːmli ˈfrɛndli.../</font></small><br>
-<i><font color="#059669">🇻🇳 VIE: Bài mẫu: Jane thân mến, tôi viết thư này để kể với bạn rằng An là một người tuyệt vời. Cô ấy cực kỳ thân thiện, hay giúp đỡ và có trách nhiệm cao. Khi rảnh rỗi, cô ấy thích đọc sách và nấu các món ăn truyền thống Việt Nam, điều mà gia đình bạn chắc chắn sẽ thích. Hiện tại, cô ấy đang học tập chăm chỉ với tư cách là sinh viên năm cuối đại học. Tôi chắc chắn cô ấy sẽ rất phù hợp với ngôi nhà của bạn. Thân ái, Nguyễn.</font></i>""",
-            "analysis_html": """<b>[🎯 NGỮ CẢNH & PHÂN TÍCH CẤU TRÚC NGỮ PHÁP BIỂU MẪU]:</b><br>
+<i><font color="#059669">🇻🇳 VIE: Bài mẫu học thuộc: Jane thân mến, tôi viết thư này để kể với bạn rằng An là một người tuyệt vời. Cô ấy cực kỳ thân thiện, hay giúp đỡ và có trách nhiệm cao. Khi rảnh rỗi, cô ấy thích đọc sách và nấu các món ăn truyền thống Việt Nam, điều mà gia đình bạn chắc chắn sẽ thích. Hiện tại, cô ấy đang học tập chăm chỉ với tư cách là sinh viên năm cuối đại học. Tôi chắc chắn cô ấy sẽ rất phù hợp với ngôi nhà của bạn. Thân ái, Nguyễn.</font></i>""",
+            "analysis_html": """<b>[🎯 PHÂN TÍCH NGỮ CẢNH CẤU TRÚC CÂU & NGỮ PHÁP]:</b><br>
 1. <b>Cấu trúc mô tả tính cách song hành:</b> Cụm <i>"She is extremely friendly, helpful, and highly responsible"</i> ứng dụng trạng từ bổ nghĩa cấp độ cao (extremely, highly) đi kèm tính từ cốt lõi, giúp ghi điểm tuyệt đối tiêu chí Từ vựng (Vocabulary).<br>
 2. <b>Mệnh đề quan hệ không hạn định:</b> Sử dụng cụm <i>", which your family will definitely enjoy"</i> bổ nghĩa cho toàn bộ hành động phía trước, tạo câu phức chuẩn mực cấu trúc VSTEP bậc 4.<br>
 3. <b>Cách dùng thì Hiện tại tiếp diễn biểu đạt trạng thái:</b> <i>"she is studying hard as a..."</i> nhấn mạnh tính liên tục của hành động học tập hiện tại."""
@@ -233,24 +233,20 @@ for de_name in VSTEP_MASTER_DATABASE.keys():
 <i><font color="#059669">🇻🇳 VIE: Đề bài: Bạn thường làm gì vào thời gian rảnh? Bạn thích đọc sách hay xem TV hơn?</font></i>""",
             "model_answer_raw": "In my free time, I often read books and listen to English music. Personally speaking, I prefer reading books to watching television because books help widen my knowledge and reduce stress after hard working hours.",
             "model_answer_html": """<b><font color="#1E3A8A">ENG:</font></b> Speaking Response: In my free time, I often read books and listen to English music. Personally speaking, I prefer reading books to watching television because books help widen my knowledge and reduce stress after hard working hours.<br>
-<small><font color="#4B5563">🎵 IPA: /ɪn maɪ friː taɪm, maɪ ˈɒfən riːd bʊks ənd ˈlɪsən tuː ˈɪŋɡlɪʃ ˈmjuːzɪk./</font></small><br>
+<small><font color="#4B5563">🎵 IPA: /ɪn maɪ friː taɪm, maɪ ˈɒfən riːd bʊks ənd ˈlɪsən tuː ˈɪŋɡlɪʃ ˈmjuːzɪk. ˈpɜːrsənəli ˈspiːkɪŋ.../</font></small><br>
 <i><font color="#059669">🇻🇳 VIE: Câu trả lời mẫu thuộc lòng: Vào thời gian rảnh, tôi thường đọc sách và nghe nhạc tiếng Anh. Đối với cá nhân tôi, tôi thích đọc sách hơn xem ti vi vì sách giúp mở rộng kiến thức và giảm căng thẳng sau những giờ làm việc vất vả.</font></i>"""
         }
     ]
 
-# CHỈ THỊ ÉP ĐỊNH DẠNG TUYỆT ĐỐI 3 DÒNG INTERLINEAR CHO HỆ THỐNG PHÂN TÍCH CHUYÊN GIA (PROMPT MASTER)
 MASTER_PROMPT = """
 # ROLE & PERSONALITY
 You are the elite "VSTEP Master Trainer" specialized in rapid remediation for learners who lost their English roots (người mất gốc). Address the user respectfully as "thầy cô".
 
-# UNIVERSAL COMPACT INTERLINEAR RULE (CRITICAL ABSOLUTE MANDATE)
-Every single piece of English text, sample sentence, example, correction text, or alternative reference question that you output MUST strictly follow this 3-line interlinear layout with hard `<br>` break tags:
+# UNIVERSAL COMPACT INTERLINEAR RULE
+Every piece of English text output MUST strictly follow this 3-line interlinear layout with hard `<br>` breaks:
 <b><font color="#1E3A8A">ENG:</font></b> [English Text]<br>
-<small><font color="#4B5563">🎵 IPA: /[Standard International Phonetic Alphabet chunk pauses]/</font></small><br>
-<i><font color="#059669">🇻🇳 VIE: [Dịch Nghĩa Tiếng Việt Bình Dân Dễ Hiểu Nhất]</font></i>
-
-# EXPANDER DIEN_GIAI PACKAGING PROTOCOL WITH MANDATORY INTERLINEAR REFERENCES
-You MUST bundle your entire feedback analytical breakdown strictly inside `[DIEN_GIAI_START]` and `[DIEN_GIAI_END]` tags.
+<small><font color="#4B5563">🎵 IPA: /[Phonetic Transcription]/</font></small><br>
+<i><font color="#059669">🇻🇳 VIE: [Dịch Nghĩa Tiếng Việt]</font></i>
 """
 
 SAFETY_SETTINGS = {
@@ -261,11 +257,19 @@ SAFETY_SETTINGS = {
 }
 
 MODEL_NAME = "gemini-2.5-flash"
-
-# CHỈ SỐ DANH MỤC CÁC ĐỀ ĐỂ PHỤC VỤ THUẬT TOÁN CHUYỂN ĐỀ TỰ ĐỘNG
 DE_LIST_KEYS = list(VSTEP_MASTER_DATABASE.keys())
 
-# --- HẠ TẦNG SIDEBAR ĐIỀU HÀNH PHẲNG CHỐNG ĐƠ NÚT LỆNH ---
+# Quản lý trạng thái cốt lõi
+if "selected_de" not in st.session_state:
+    st.session_state.selected_de = DE_LIST_KEYS[0]
+if "current_section" not in st.session_state:
+    st.session_state.current_section = "1️⃣ VSTEP Nghe"
+if "current_q_idx" not in st.session_state:
+    st.session_state.current_q_idx = 0
+if "score" not in st.session_state:
+    st.session_state.score = 0
+
+# --- SIDEBAR ĐIỀU HÀNH PHẲNG TUYỆT ĐỐI ---
 st.sidebar.title("🎓 TRUNG TÂM ĐIỀU HÀNH VSTEP")
 
 if "GEMINI_API_KEY" in st.secrets:
@@ -273,122 +277,86 @@ if "GEMINI_API_KEY" in st.secrets:
 else:
     api_key = st.sidebar.text_input("Nhập mã truy cập hệ thống:", type="password")
 
-st.sidebar.markdown("### 📁 BỘ CHỌN MÃ ĐỀ THI LUYỆN TẬP")
-# Đồng bộ hóa mã đề trực tiếp vào bộ nhớ Session State
-if "selected_de" not in st.session_state:
-    st.session_state.selected_de = DE_LIST_KEYS[0]
-
+st.sidebar.markdown("### 📁 BỘ CHỌN MÃ ĐỀ THI")
 current_de_idx = DE_LIST_KEYS.index(st.session_state.selected_de)
-chosen_de = st.sidebar.selectbox(
-    "Chọn Đề thi thực chiến:",
-    DE_LIST_KEYS,
-    index=current_de_idx,
-    key="selectbox_de_master"
-)
+chosen_de = st.sidebar.selectbox("Chọn Đề thi thực chiến:", DE_LIST_KEYS, index=current_de_idx, key="sb_de_master_direct")
 if chosen_de != st.session_state.selected_de:
     st.session_state.selected_de = chosen_de
     st.session_state.current_q_idx = 0
     st.rerun()
 
-font_size = st.sidebar.slider("Kích thước chữ hiển thị", 14, 24, 16)
-st.markdown(f"<style>.stMarkdown, p, li, .stChatMessage {{ font-size: {font_size}px !important; }}</style>", unsafe_allow_html=True)
+font_size = st.sidebar.slider("Kích thước chữ", 14, 24, 16)
+st.markdown(f"<style>.stMarkdown, p, li {{ font-size: {font_size}px !important; }}</style>", unsafe_allow_html=True)
 
-# Gán trực tiếp trạng thái phân hệ thi và làm mới màn hình lập tức
 st.sidebar.markdown("### 🔢 PHẦN THI CHUYÊN BIỆT")
-col_s1, col_s2 = st.sidebar.columns(2)
-with col_s1:
-    if st.sidebar.button("1️⃣ VSTEP Nghe", use_container_width=True, key="side_btn_nghe"):
+c1, c2 = st.sidebar.columns(2)
+with c1:
+    if st.sidebar.button("1️⃣ VSTEP Nghe", use_container_width=True, key="sd_n"):
         st.session_state.current_section = "1️⃣ VSTEP Nghe"
         st.session_state.current_q_idx = 0
         st.rerun()
-with col_s2:
-    if st.sidebar.button("2️⃣ VSTEP Đọc", use_container_width=True, key="side_btn_doc"):
+with c2:
+    if st.sidebar.button("2️⃣ VSTEP Đọc", use_container_width=True, key="sd_d"):
         st.session_state.current_section = "2️⃣ VSTEP Đọc"
         st.session_state.current_q_idx = 0
         st.rerun()
 
-col_s3, col_s4 = st.sidebar.columns(2)
-with col_s3:
-    if st.sidebar.button("3️⃣ VSTEP Viết", use_container_width=True, key="side_btn_viet"):
+c3, c4 = st.sidebar.columns(2)
+with c3:
+    if st.sidebar.button("3️⃣ VSTEP Viết", use_container_width=True, key="sd_v"):
         st.session_state.current_section = "3️⃣ VSTEP Viết"
         st.session_state.current_q_idx = 0
         st.rerun()
-with col_s4:
-    if st.sidebar.button("4️⃣ VSTEP Nói", use_container_width=True, key="side_btn_noi"):
+with c4:
+    if st.sidebar.button("4️⃣ VSTEP Nói", use_container_width=True, key="sd_no"):
         st.session_state.current_section = "4️⃣ VSTEP Nói"
         st.session_state.current_q_idx = 0
         st.rerun()
 
-st.sidebar.markdown("---")
-st.sidebar.markdown("### Compass 🧭 ĐIỀU HƯỚNG CÂU HỎI")
-
 questions_list = VSTEP_MASTER_DATABASE[st.session_state.selected_de].get(st.session_state.current_section, [])
 max_questions = len(questions_list)
 
-col_prev, col_next = st.sidebar.columns(2)
-with col_prev:
-    if st.sidebar.button("⏮️ CÂU TRƯỚC", use_container_width=True, key="global_nav_prev"):
+st.sidebar.markdown("---")
+st.sidebar.markdown("### 🧭 ĐIỀU HƯỚNG CÂU HỎI")
+cp, cn = st.sidebar.columns(2)
+with cp:
+    if st.sidebar.button("⏮️ CÂU TRƯỚC", use_container_width=True, key="nav_p"):
         if st.session_state.current_q_idx > 0:
             st.session_state.current_q_idx -= 1
             st.rerun()
-with col_next:
-    if st.sidebar.button("⏭️ CÂU TIẾP", use_container_width=True, key="global_nav_next"):
+with cn:
+    if st.sidebar.button("⏭️ CÂU TIẾP", use_container_width=True, key="nav_n"):
         if st.session_state.current_q_idx < max_questions - 1:
             st.session_state.current_q_idx += 1
             st.rerun()
 
-# PHÍM BẤM SỐ CHỌN NHANH CÂU HỎI CHỐNG KẸT GIAO DIỆN
-st.sidebar.markdown("### 🎯 PHÍM BẤM SỐ CÂU CHỌN NHANH")
 if max_questions > 0:
-    nav_slots = st.sidebar.columns(max_questions)
+    st.sidebar.markdown("### 🎯 PHÍM CHỌN CÂU NHANH")
+    slots = st.sidebar.columns(max_questions)
     for i in range(max_questions):
-        with nav_slots[i]:
-            btn_lbl = f"*{i+1}*" if i == st.session_state.current_q_idx else f"{i+1}"
-            if st.button(btn_lbl, key=f"quick_slot_nav_{st.session_state.selected_de}_{st.session_state.current_section}_{i}", use_container_width=True):
+        with slots[i]:
+            lbl = f"*{i+1}*" if i == st.session_state.current_q_idx else f"{i+1}"
+            if st.button(lbl, key=f"qk_nav_{i}", use_container_width=True):
                 st.session_state.current_q_idx = i
                 st.rerun()
 
-# --- KHÔNG GIAN KHẢO THÍ SỐ HÓA VSTEP CHÍNH DIỆN ---
+# --- KHÔNG GIAN MAIN WORKSPACE CHÍNH DIỆN ---
 st.title("🎓 HỆ THỐNG KHẢO SÁT NĂNG LỰC TIẾNG ANH VSTEP CHUẨN SƯ PHẠM")
-st.caption(f"Cơ sở hạ tầng Master Blueprint quy chuẩn | Đang vận hành: {st.session_state.selected_de}")
+st.caption(f"Đang vận hành: {st.session_state.selected_de}")
 st.markdown("---")
 
-# NÚT BẤM THÔNG MINH CHUYỂN ĐỀ CHIẾN LƯỢC THEO YÊU CẦU MỚI BỔ SUNG
-current_de_position = DE_LIST_KEYS.index(st.session_state.selected_de)
-if current_de_position < len(DE_LIST_KEYS) - 1:
-    if st.button("🎉 NẾU ĐÃ THÀNH THẠO LÀM TỐT ĐỀ NÀY, BẤM ĐỂ CHUYỂN SANG MÃ ĐỀ TIẾP THEO 🚀", use_container_width=True):
-        st.session_state.selected_de = DE_LIST_KEYS[current_de_position + 1]
+# NÚT BẤM THÔNG MINH CHUYỂN ĐỀ CHIẾN LƯỢC THEO YÊU CẦU BỔ SUNG
+current_de_pos = DE_LIST_KEYS.index(st.session_state.selected_de)
+if current_de_pos < len(DE_LIST_KEYS) - 1:
+    if st.button("🎉 THÀNH THẠO ĐỀ NÀY RỒI ── BẤM ĐỂ CHUYỂN SANG MÃ ĐỀ TIẾP THEO MỨC ĐỘ TIẾP THEO 🚀", use_container_width=True):
+        st.session_state.selected_de = DE_LIST_KEYS[current_de_pos + 1]
         st.session_state.current_q_idx = 0
         st.rerun()
-else:
-    st.success("🏆 Chúc mừng thầy cô đã hoàn thành chuỗi rèn luyện tinh hoa xuất sắc qua cả 4 mã đề thi!")
 
 st.markdown("---")
 
-# BẢNG THEO DÕI ĐẾM NGƯỢC THỜI GIAN TĨNH TRÊN MAIN DASHBOARD
-if "start_time" not in st.session_state:
-    st.session_state.start_time = time.time()
-elapsed_time = time.time() - st.session_state.start_time
-remaining_time = max(50 * 60 - elapsed_time, 0)
-mins, secs = divmod(int(remaining_time), 60)
-
-dash_col1, dash_col2, dash_col3 = st.columns(3)
-with dash_col1:
-    st.markdown(f"**📊 PHẦN THI: {st.session_state.current_section}**")
-    if max_questions > 0:
-        st.progress((st.session_state.current_q_idx + 1) / max_questions)
-with dash_col2:
-    if "score" not in st.session_state:
-        st.session_state.score = 0
-    st.metric(label="💯 Điểm Luyện Tập Tích Lũy", value=f"{st.session_state.score} Điểm")
-with dash_col3:
-    st.metric(label="⏳ Thời Gian Còn Lại", value=f"{mins:02d}:{secs:02d} Phút")
-
-st.markdown("---")
-
-# TRÍCH XUẤT ĐỐI TƯỢNG ĐỀ BÀI HIỆN TẠI
 if max_questions == 0:
-    st.info("Hệ thống đang đồng bộ cơ sở dữ liệu phân hệ này. Vui lòng chọn kỹ năng khác ở thanh sườn.")
+    st.info("Đang nạp dữ liệu phân hệ...")
 else:
     active_q = questions_list[st.session_state.current_q_idx]
     q_key = f"{st.session_state.selected_de}_{st.session_state.current_section}_{active_q['id']}"
@@ -396,167 +364,66 @@ else:
         st.session_state.submitted_state = {}
     is_submitted = q_key in st.session_state.submitted_state
 
-    # LUỒNG HIỂN THỊ VÀ TÍCH HỢP NÚT PHÁT ÂM AUDIO CHO TỪNG PHÂN HỆ KHẢO THÍ
-    if st.session_state.current_section == "1️⃣ VSTEP Nghe":
-        st.info("🎧 **Nội dung nghe ghi âm mẫu chuyên nghiệp (Bấm nút Play để nghe kịch bản âm thanh):**")
-        tts_main = gTTS(text=active_q["raw_script"], lang='en', tld='com')
-        fp_main = io.BytesIO()
-        tts_main.write_to_fp(fp_main)
-        fp_main.seek(0)
-        st.audio(fp_main, format="audio/mp3")
-        
-        if is_submitted:
-            st.success("=== VĂN BẢN BÓC BĂNG ÂM THANH (AUDIO SCRIPT) CHUẨN 3 DÒNG TỐI CAO ===")
-            st.markdown(active_q["script_html"], unsafe_allow_html=True)
-            st.markdown("=========================================================")
-
-        st.markdown("**Nội dung câu hỏi khảo thí:**")
-        st.markdown(active_q["question_html"], unsafe_allow_html=True)
-
-    elif st.session_state.current_section == "2️⃣ VSTEP Đọc":
-        st.success("=== ĐOẠN VĂN NỀN ĐỌC HIỂU HOÀN CHỈNH (PASSAGE CONTEXT) CHUẨN 3 DÒNG ===")
-        st.markdown(active_q["passage_html"], unsafe_allow_html=True)
-        st.markdown("=========================================================")
-        
-        st.info("🎵 **Thành phần hỗ trợ luyện đọc - Hãy bấm nút phát nhạc bên dưới để nghe mẫu và đối chiếu phát âm chính xác:**")
-        tts_read = gTTS(text=active_q["raw_passage"], lang='en', tld='com')
-        fp_read = io.BytesIO()
-        tts_read.write_to_fp(fp_read)
-        fp_read.seek(0)
-        st.audio(fp_read, format="audio/mp3")
-        st.markdown("---")
-        
-        st.markdown("**Nội dung câu hỏi khảo thí:**")
-        st.markdown(active_q["question_html"], unsafe_allow_html=True)
-
-    elif st.session_state.current_section in ["3️⃣ VSTEP Viết", "4️⃣ VSTEP Nói"]:
-        st.warning("📊 **Yêu cầu phân hệ khảo sát tự luận mẫu:**")
+    # PHÂN PHỐI LUỒNG HIỂN THỊ TỰ LUẬN TĨNH KHÔNG CẦN CHỜ BẤM NỘP
+    if st.session_state.current_section in ["3️⃣ VSTEP Viết", "4️⃣ VSTEP Nói"]:
+        st.warning("📊 **Yêu cầu phân hệ khảo sát tự luận mẫu quy chuẩn:**")
         st.markdown(active_q["prompt_html"], unsafe_allow_html=True)
         st.markdown("---")
+        
         st.markdown("### 🏆 ĐÁP ÁN MẪU KHUYÊN DÙNG ĐỂ HỌC THUỘC LÒNG THỰC CHIẾN:")
         st.markdown(active_q["model_answer_html"], unsafe_allow_html=True)
         
-        # BỔ SUNG NÚT PLAY ĐỌC CHO BÀI MẪU VIẾT VÀ NÓI THEO YÊU CẦU
-        st.info("🎵 **Nút phát âm mẫu bài thi tự luận - Bấm để luyện nghe ngữ điệu chuẩn chuẩn hóa:**")
-        tts_writing_speech = gTTS(text=active_q["model_answer_raw"], lang='en', tld='com')
-        fp_writ = io.BytesIO()
-        tts_writing_speech.write_to_fp(fp_writ)
-        fp_writ.seek(0)
-        st.audio(fp_writ, format="audio/mp3")
+        # TÍCH HỢP THANH PHÁT ÂM AUDIO CHO BÀI MẪU TỰ LUẬN
+        st.info("🎵 **Nút phát âm mẫu bài thi tự luận - Bấm để luyện nghe ngữ điệu chuẩn hóa:**")
+        tts_auto = gTTS(text=active_q["model_answer_raw"], lang='en', tld='com')
+        fp_auto = io.BytesIO()
+        tts_auto.write_to_fp(fp_auto)
+        fp_auto.seek(0)
+        st.audio(fp_auto, format="audio/mp3")
         
         if st.session_state.current_section == "3️⃣ VSTEP Viết" and "analysis_html" in active_q:
-            with st.expander("🧠 PHÂN TÍCH NGỮ CẢNH CẤU TRÚC CÂU & NGỮ PHÁP CHI TIẾT"):
-                st.markdown(active_q["analysis_html"], unsafe_allow_html=True)
+            st.markdown("---")
+            st.markdown(active_q["analysis_html"], unsafe_allow_html=True)
 
-    # --- KHẮC PHỤC TRIỆT ĐỂ LỖI Ô CHỌN TRỐNG CHỮ BẰNG THÈ CARD-ACTION LỰA CHỌN TĨNH ---
-    if st.session_state.current_section in ["1️⃣ VSTEP Nghe", "2️⃣ VSTEP Đọc"]:
-        options_keys = list(active_q["options_html"].keys())
-        
+    else:
+        # HIỂN THỊ CHO PHÂN HỆ TRẮC NGHIỆM (NGHE/ĐỌC)
+        if st.session_state.current_section == "1️⃣ VSTEP Nghe":
+            st.info("🎧 **Nội dung nghe ghi âm mẫu chuyên nghiệp:**")
+            tts_m = gTTS(text=active_q["raw_script"], lang='en', tld='com')
+            fp_m = io.BytesIO()
+            tts_m.write_to_fp(fp_m)
+            fp_m.seek(0)
+            st.audio(fp_m, format="audio/mp3")
+            if is_submitted:
+                st.markdown(active_q["script_html"], unsafe_allow_html=True)
+
+        elif st.session_state.current_section == "2️⃣ VSTEP Đọc":
+            st.success("=== ĐOẠN VĂN NỀN ĐỌC HIỂU HOÀN CHỈNH ===")
+            st.markdown(active_q["passage_html"], unsafe_allow_html=True)
+            st.info("🎵 **Thành phần phát âm hỗ trợ luyện đọc:**")
+            tts_r = gTTS(text=active_q["raw_passage"], lang='en', tld='com')
+            fp_r = io.BytesIO()
+            tts_r.write_to_fp(fp_r)
+            fp_r.seek(0)
+            st.audio(fp_r, format="audio/mp3")
+
+        st.markdown("---")
+        st.markdown(active_q["question_html"], unsafe_allow_html=True)
+
+        # CARD ACTION TĨNH CHỐNG LỖI TRỐNG CHỮ 
         if not is_submitted:
-            st.markdown("---")
-            st.markdown("### 📝 MỜI THẦY CÔ NHẤP CHỌN PHƯƠNG ÁN ĐÁP ÁN TRỰC TIẾP:")
-            
-            for key in options_keys:
-                html_content = active_q["options_html"][key]
-                
-                # Kết xuất hộp văn bản tĩnh trọn vẹn chữ nghĩa 3 dòng độc lập
-                st.markdown(f"""
-                <div style='background-color:#F8FAFC; border-left:4px solid #1E3A8A; padding:12px; border-radius:6px; margin-top:10px; margin-bottom:5px;'>
-                    {html_content}
-                </div>
-                """, unsafe_allow_html=True)
-                
-                # Nút hành động tương tác trực tiếp dưới chân hộp chữ, triệt tiêu hoàn toàn st.radio
-                if st.button(f"👉 XÁC NHẬN CHỌN PHƯƠNG ÁN {key}", key=f"btn_select_card_{key}_q{active_q['id']}_{st.session_state.current_section.replace(' ', '_')}_{st.session_state.selected_de}", use_container_width=True):
+            for key in active_q["options_html"].keys():
+                st.markdown(f"<div style='background-color:#F8FAFC; border-left:4px solid #1E3A8A; padding:12px; border-radius:6px; margin-top:10px;'>{active_q['options_html'][key]}</div>", unsafe_allow_html=True)
+                if st.button(f"👉 XÁC NHẬN CHỌN PHƯƠNG ÁN {key}", key=f"btn_{key}_{q_key}", use_container_width=True):
                     st.session_state.submitted_state[q_key] = key
-                    is_correct = (key == active_q["correct"])
-                    score_tag = "[SCORE_UP]" if is_correct else ""
-                    
-                    eval_prompt = f"""
-                    Học viên đang làm đề {st.session_state.selected_de}, kỹ năng {st.session_state.current_section}, câu hỏi id {active_q['id']}.
-                    Đáp án đúng của hệ thống là: {active_q['correct']}. Học viên chọn phương án: {key}.
-                    Hãy xuất ra kết quả phân tích chuẩn hóa. Nếu đúng chèn thẻ {score_tag}.
-                    Áp dụng quy tắc cưỡng bách 3 dòng interlinear cho toàn bộ văn bản giải thích.
-                    Đóng gói phần bóc tách sơ đồ tư duy, từ khóa vàng định vị thính giác vào cặp thẻ [DIEN_GIAI_START] và [DIEN_GIAI_END]. Mọi dòng chữ tiếng Anh xuất hiện trong bài tập bổ sung, kể cả các nhãn dạng 'Question:', phải có phiên âm và dịch nghĩa 3 dòng tuyệt đối với thẻ <br> cứng.
-                    """
-                    
-                    if not api_key:
-                        st.sidebar.error("Vui lòng cung cấp mã truy cập hệ thống tại thanh bên dọc.")
-                    else:
-                        with st.spinner("Hệ thống đang đối chiếu dữ liệu..."):
-                            try:
-                                genai.configure(api_key=api_key)
-                                model = genai.GenerativeModel(MODEL_NAME, system_instruction=MASTER_PROMPT, safety_settings=SAFETY_SETTINGS)
-                                response = model.generate_content(eval_prompt)
-                                res_text = response.candidates[0].content.parts[0].text
-                                
-                                if "[SCORE_UP]" in res_text:
-                                    if "scored_questions" not in st.session_state:
-                                        st.session_state.scored_questions = set()
-                                    if q_key not in st.session_state.scored_questions:
-                                        st.session_state.score += 10
-                                        st.session_state.scored_questions.add(q_key)
-                                        
-                                if "saved_explanations" not in st.session_state:
-                                    st.session_state.saved_explanations = {}
-                                st.session_state.saved_explanations[q_key] = res_text
-                                st.rerun()
-                            except Exception as e:
-                                st.error(f"Lỗi truyền tải phân tích: {e}")
+                    if key == active_q["correct"]:
+                        st.session_state.score += 10
+                    st.rerun()
         else:
-            # Khung đồ hóa kết quả chấm bài cố định: Bôi xanh đáp án đúng chuẩn mực
-            st.markdown("---")
-            st.markdown("### 📊 TRẠNG THÁI ĐỐI CHIẾU PHƯƠNG ÁN ĐỒ HỌA SỐ HÓA:")
             for key, html_val in active_q["options_html"].items():
                 if key == active_q["correct"]:
                     st.markdown(f"<div style='border:2px solid #2E7D32; background-color:#E8F5E9; padding:12px; border-radius:6px; margin-bottom:12px;'><b>✔ ĐÁP ÁN ĐÚNG CHUẨN XÁC:</b><br>{html_val}</div>", unsafe_allow_html=True)
-                elif key == st.session_state.submitted_state[q_key] and st.session_state.submitted_state[q_key] != active_q["correct"]:
-                    st.markdown(f"<div style='border:2px solid #D32F2F; background-color:#FFEBEE; padding:12px; border-radius:6px; margin-bottom:12px;'><b>✘ LỰA CHỌN CỦA BẠN:</b><br>{html_val}</div>", unsafe_allow_html=True)
+                elif key == st.session_state.submitted_state[q_key]:
+                    st.markdown(f"<div style='border:2px solid #D32F2F; background-color:#FFEBEE; padding:12px; border-radius:6px; margin-bottom:12px;'><b>✘ LỰA CHỌN CỦA THẦY CÔ:</b><br>{html_val}</div>", unsafe_allow_html=True)
                 else:
-                    st.markdown(f"<div style='border:1px solid #E5E7EB; padding:12px; border-radius:6px; margin-bottom:12px; opacity:0.5;'><b>Phương án {key}:</b><br>{html_val}</div>", unsafe_allow_html=True)
-
-    st.markdown("---")
-
-    # --- ĐỘNG CƠ BIÊN DỊCH VĂN BẢN ÂM THANH NỘI HÀM VÀ HIỂN THỊ GIẢI THÍCH CHUYÊN GIA ---
-    def process_inline_audio(text):
-        pattern = r"\[AUDIO_START\](.*?)\[AUDIO_END\]"
-        matches = re.findall(pattern, text)
-        for match in matches:
-            phrase = match.strip()
-            if phrase:
-                try:
-                    clean_phrase = re.sub('<[^<]+?>', '', phrase)
-                    clean_phrase = clean_phrase.replace("ENG:", "").replace("IPA:", "").replace("VIE:", "").strip()
-                    clean_phrase = clean_phrase.replace("Question:", "").replace("Question Context:", "").strip()
-                    tts = gTTS(text=clean_phrase, lang='en', tld='com')
-                    fp = io.BytesIO()
-                    tts.write_to_fp(fp)
-                    fp.seek(0)
-                    b64_audio = base64.b64encode(fp.read()).decode()
-                    audio_html = f'<audio controls src="data:audio/mp3;base64,{b64_audio}" style="width: 100%; max-width: 340px; display: block; margin-top: 6px; margin-bottom: 12px;"></audio>'
-                    text = text.replace(f"[AUDIO_START]{match}[AUDIO_END]", audio_html)
-                except Exception as e:
-                    text = text.replace(f"[AUDIO_START]{match}[AUDIO_END]", f"*(Trục trặc tải âm thanh: {e})*")
-        return text
-
-    def render_custom_vstep_message(content):
-        clean_content = content
-        dien_giai_text = ""
-        if "[DIEN_GIAI_START]" in content and "[DIEN_GIAI_END]" in content:
-            start_dg = content.find("[DIEN_GIAI_START]")
-            end_dg = content.find("[DIEN_GIAI_END]")
-            dien_giai_text = content[start_dg + len("[DIEN_GIAI_START]"):end_dg].strip()
-            clean_content = content.replace(content[start_dg:end_dg + len("[DIEN_GIAI_END]")], "")
-        
-        visible_content = clean_content.replace("[SCORE_UP]", "")
-        visible_content = process_inline_audio(visible_content)
-        st.markdown(visible_content, unsafe_allow_html=True)
-        
-        if dien_giai_text:
-            dien_giai_text = process_inline_audio(dien_giai_text)
-            with st.expander("=== THÀNH PHẦN MỞ RỘNG: SƠ ĐỒ TƯ DUY, CỤM TỪ VÀNG & CÂU HỎI THAM KHẢO ==="):
-                st.markdown(dien_giai_text, unsafe_allow_html=True)
-
-    if "saved_explanations" in st.session_state and q_key in st.session_state.saved_explanations:
-        st.markdown("### 🔔 KẾT QUẢ KIỂM ĐỊNH TỪ HỆ THỐNG CHUYÊN GIA:")
-        render_custom_vstep_message(st.session_state.saved_explanations[q_key])
+                    st.markdown(f"<div style='border:1px solid #E5E7EB; padding:12px; border-radius:6px; margin-bottom:12px; opacity:0.5;'>{html_val}</div>", unsafe_allow_html=True)
