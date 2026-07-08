@@ -5,7 +5,7 @@ import time
 
 # 1. Cấu hình giao diện phẳng quy chuẩn phòng thi
 st.set_page_config(
-    page_title="He Thong Khao Sat Nang Luc Tieng Anh VSTEP Giaovien",
+    page_title="He Thong Khao Sat Nang Luc Tieng Anh VSTEP Giao Vien",
     page_icon="🎓",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -33,7 +33,7 @@ VSTEP_DATABASE = {
                 "id": 2,
                 "type": "Part 1: Questions 1-8 (Airport Announcement)",
                 "correct": "B",
-                "question_html": "<b>[ENG]:</b> Question 2. What is the updated boarding time of Flight VN178 to Ho Chi Minh City?<br><i>[VIE]: Cau 2: Gio len may bay duoc cap nhat moi cua Chuyến bay VN178 di Thanh pho Ho Chi Minh la may gio?</i>",
+                "question_html": "<b>[ENG]:</b> Question 2. What is the updated boarding time of Flight VN178 to Ho Chi Minh City?<br><i>[VIE]: Cau 2: Gio len may bay duoc cap nhat moi cua Chuyen bay VN178 di Thanh pho Ho Chi Minh la may gio?</i>",
                 "options_html": {
                     "A": "<b>[ENG]:</b> A. The plane will take off at exactly three thirty.<br><i>[VIE]: Phuong an A: May bay se cat canh vao luc chinh xac ba gio ba muoi phut.</i>",
                     "B": "<b>[ENG]:</b> B. The new adjusted schedule is set for three forty-five.<br><i>[VIE]: Phuong an B: Lich trinh dieu chinh moi duoc an dinh vao luc ba gio bon muoi lam phut.</i>",
@@ -61,7 +61,7 @@ VSTEP_DATABASE = {
             },
             {
                 "id": 2,
-                "type": "PASSAGE 2 - Judicial Psychology",
+                "type": "PASSAGE 1 - Question 2",
                 "correct": "B",
                 "raw_passage": "Behind closed doors most judges, even very experienced ones, are much more anxious about their work than most people might think.",
                 "passage_html": "<b>[ENG]:</b> Context: Behind closed doors most judges, even very experienced ones, are much more anxious about their work than most people might think.<br><i>[VIE]: Ngu canh: Dang sau nhung canh cua dong kin, hau het cac tham phan, ngay ca nhung nguoi rat giau kinh nghiem, deu lo lang ve cong viec cua ho nhieu hon moi nguoi nghi.</i>",
@@ -71,43 +71,15 @@ VSTEP_DATABASE = {
                     "B": "<b>[ENG]:</b> B. They are significantly more anxious and worried than public perception indicates.<br><i>[VIE]: Phuong an B: Ho lo lang va ban khoan nhieu hon dang ke so voi nhung gi cong chung nhan dinh.</i>"
                 }
             }
-        ]
-    }
-}
-
-# 3. Khoi tao cac ma de song song song hanh de he thong khong bi trong du lieu
-for letter in ["B", "C", "D"]:
-    name = "Mã đề VSTEP-2026-" + letter + " (Biến Thể Song Song)"
-    VSTEP_DATABASE[name] = {
-        "1️⃣ VSTEP Nghe": [
-            {
-                "id": 1, "type": "Part 1: Q1", "correct": "A",
-                "question_html": "<b>[ENG]:</b> What industry is discussed today?<br><i>[VIE]: Cau 1: Nganh cong nghiep nao duoc thao luan hom nay?</i>",
-                "options_html": {"A": "<b>[ENG]:</b> A. Ecotourism expansion.<br><i>[VIE]: Phuong an A: Phat trien du lich sinh thai.</i>", "B": "<b>[ENG]:</b> B. Heavy manufacturing.<br><i>[VIE]: Phuong an B: San xuat cong nghiep nang.</i>"},
-                "raw_script": "Today we will focus our attention directly on the ecotourism expansion.",
-                "script_html": "<b>[ENG]:</b> Today we will focus our attention directly on the ecotourism expansion.<br><i>[VIE]: Hom nay chung ta se tap trung su chu y truc tiep vao su phat trien du lich sinh thai.</i>"
-            }
         ],
-        "2️⃣ VSTEP Đọc": [
+        "3️⃣ VSTEP Viết": [
             {
-                "id": 1, "type": "Passage 1: Q1", "correct": "B",
-                "raw_passage": "Developing systematic knowledge inside classroom settings requires dedication.",
-                "passage_html": "<b>[ENG]:</b> Context: Developing systematic knowledge inside classroom settings requires dedication.<br><i>[VIE]: Ngu canh: Viec phat trien kien thuc co he thong trong moi truong lop hoc doi hoi su cong hien.</i>",
-                "question_html": "<b>[ENG]:</b> Question 1: What does developing knowledge require?<br><i>[VIE]: Cau hoi 1: Viec phat trien kien thuc doi hoi dieu gi?</i>",
-                "options_html": {"A": "<b>[ENG]:</b> A. Wealth power.<br><i>[VIE]: Phuong an A: Quyen luc tien bac.</i>", "B": "<b>[ENG]:</b> B. Dedication attitude.<br><i>[VIE]: Phuong an B: Thai do cong hien.</i>"}
-            }
-        ]
-    }
-
-# 4. Dong bo hoa phan tu luan tinh tinh hop so do tu duy
-for name in list(VSTEP_DATABASE.keys()):
-    VSTEP_DATABASE[name]["3️⃣ VSTEP Viết"] = [
-        {
-            "id": 1, "type": "TASK 1",
-            "prompt_html": "<b>[ENG]:</b> Tell Jane about An's personality.<br><i>[VIE]: Hay ke cho Jane ve tinh cach cua An.</i>",
-            "model_answer_raw": "An is an exceptionally friendly person. She loves reading books. Currently, she is studying hard at university.",
-            "model_answer_html": "<b>[ENG]:</b> Model Answer: An is an exceptionally friendly person. She loves reading books. Currently, she is studying hard at university.<br><i>[VIE]: Bai mau: An la mot nguoi cuc ky than thien. Co ay thich doc sach. Hien tai, co ay dang hoc tap cham chi o truong dai hoc.</i>",
-            "analysis_html": """### 🧠 SƠ ĐỒ TƯ DUY NGỮ PHÁP PHÂN TÍCH CÂU (MIND MAP)
+                "id": 1,
+                "type": "TASK 1 - Informal Email (Time allowance: 20 minutes)",
+                "prompt_html": "<b>[ENG]:</b> TASK 1: Reply to Jane's email asking about your friend An who wants to stay with her family.<br><i>[VIE]: DE BÀI TASK 1: Tra loi email cua Jane hoi thong tin ve An nguoi muon o cung gia dinh co ay.</i>",
+                "model_answer_raw": "Dear Jane, An is an exceptionally friendly person. She loves reading books. Currently, she is studying hard at university.",
+                "model_answer_html": "<b>[ENG]:</b> Model Answer: Dear Jane, An is an exceptionally friendly person. She loves reading books. Currently, she is studying hard at university.<br><i>[VIE]: Bai viet mau hoc thuoc: Jane than men, An la mot nguoi cuc ky than thien. Co ay thich doc sach. Hien tai, co ay dang hoc tap cham chi o truong dai hoc.</i>",
+                "analysis_html": """### 🧠 SƠ ĐỒ TƯ DUY NGỮ PHÁP PHÂN TÍCH CÂU (MIND MAP)
 <b>📌 CÂU 1: "An is an exceptionally friendly person."</b><br>
 • Cấu trúc đặt câu:<br>
 <pre style='background-color: #F8FAFC; padding: 12px; border-left: 4px solid #1E3A8A; border-radius: 4px; font-family: monospace;'>
@@ -118,60 +90,114 @@ Chủ ngữ (S): An (Danh từ riêng)
     └── Tính từ (Adj): friendly (Bổ nghĩa cho danh từ person)
 </pre>
 • <b>Chia Thì:</b> Thì Hiện tại đơn diễn tả thực tế tính cách hiện tại. Chủ ngữ số ít đi với động từ To-be <b>"is"</b>."""
-        }
-    ]
-    VSTEP_DATABASE[name]["4️⃣ VSTEP Nói"] = [
-        {
-            "id": 1, "type": "Part 1",
-            "prompt_html": "<b>[ENG]:</b> What do you do in your free time?<br><i>[VIE]: Ban lam gi vao thoi gian ranh?</i>",
-            "model_answer_raw": "In my free time, I prefer reading books because books widen my knowledge.",
-            "model_answer_html": "<b>[ENG]:</b> Response: In my free time, I prefer reading books because books widen my knowledge.<br><i>[VIE]: Mau noi: Vao thoi gian ranh, toi thich doc sach hon vi sach mo rong kien thuc cua toi.</i>"
-        }
-    ]
+            },
+            {
+                "id": 2,
+                "type": "TASK 2 - Essay Discussion (Time allowance: 40 minutes)",
+                "prompt_html": "<b>[ENG]:</b> TASK 2: Discuss the positive and negative effects of tourism on local communities.<br><i>[VIE]: DE BÀI TASK 2: Thao luan ve cac tac dong tich cuc va tieu cuc cua du lich doi voi cong dong dia phuong.</i>",
+                "model_answer_raw": "Tourism expansion brings significant economic benefits, but it also causes environmental issues.",
+                "model_answer_html": "<b>[ENG]:</b> Model Answer: Tourism expansion brings significant economic benefits, but it also causes environmental issues.<br><i>[VIE]: Bai van mau hoc thuoc: Su mo rong du lich mang lai loi ich kinh te lon, nhung no cung gay ra cac van de moi truong.</i>",
+                "analysis_html": """### 🧠 SƠ ĐỒ TƯ DUY NGỮ PHÁP PHÂN TÍCH CÂU (MIND MAP)
+<b>📌 CÂU 1: "Tourism expansion brings significant economic benefits..."</b><br>
+• Cấu trúc đặt câu:<br>
+<pre style='background-color: #F8FAFC; padding: 12px; border-left: 4px solid #1E3A8A; border-radius: 4px; font-family: monospace;'>
+Chủ ngữ (S): Tourism expansion (Cụm danh từ)
+├── Động từ thường (V): brings (Thêm 's' vì chủ ngữ ngôi thứ ba số ít)
+└── Tân ngữ (O): significant economic benefits (Cụm danh từ tiếp nhận hành động)
+</pre>
+• <b>Chia Thì:</b> Thì Hiện tại đơn diễn tả một sự thật hiển nhiên/chân lý luận điểm."""
+            }
+        ],
+        "4️⃣ VSTEP Nói": [
+            {
+                "id": 1,
+                "type": "Part 1: Social Interaction (Free Time)",
+                "prompt_html": "<b>[ENG]:</b> What do you often do in your free time? Do you prefer reading books or watching TV?<br><i>[VIE]: DE BÀI NOI PHAN 1: Ban thuong lam gi vao thoi gian ranh? Ban thich doc sach hay xem TV hon?</i>",
+                "model_answer_raw": "In my free time, I prefer reading books because books widen my knowledge.",
+                "model_answer_html": "<b>[ENG]:</b> Response: In my free time, I prefer reading books because books widen my knowledge.<br><i>[VIE]: Cau tra loi mau: Vao thoi gian ranh, toi thich doc sach hon vi sach mo rong kien thuc cua toi.</i>",
+                "analysis_html": """### 🧠 SƠ ĐỒ TƯ DUY PHÂN TÍCH CÂU NÓI PHẢN XẠ
+<pre style='background-color: #F8FAFC; padding: 12px; border-left: 4px solid #1E3A8A; border-radius: 4px; font-family: monospace;'>
+[Cấu trúc câu ghép nguyên nhân]
+├── Trạng ngữ: In my free time
+├── Mệnh đề chính: I prefer reading books (S + V + O)
+└── Liên từ: because + Mệnh đề nguyên nhân (books widen my knowledge)
+</pre>"""
+            }
+        ]
+    }
+}
+
+# Đồng bộ hóa cấu trúc đa câu hỏi sang toàn bộ các mã đề B, C, D để triệt tiêu lỗi thiếu mảng
+for letter in ["B", "C", "D"]:
+    name = "Ma de VSTEP-2026-" + letter + " (Bien The Song Song)"
+    VSTEP_DATABASE[name] = {
+        "1️⃣ VSTEP Nghe": VSTEP_DATABASE["Ma de VSTEP-2026-A (De Minh Hoa Goc)"]["1️⃣ VSTEP Nghe"],
+        "2️⃣ VSTEP Đọc": VSTEP_DATABASE["Ma de VSTEP-2026-A (De Minh Hoa Goc)"]["2️⃣ VSTEP Đọc"],
+        "3️⃣ VSTEP Viết": VSTEP_DATABASE["Ma de VSTEP-2026-A (De Minh Hoa Goc)"]["3️⃣ VSTEP Viết"],
+        "4️⃣ VSTEP Nói": VSTEP_DATABASE["Ma de VSTEP-2026-A (De Minh Hoa Goc)"]["4️⃣ VSTEP Nói"]
+    }
 
 DE_LIST_KEYS = list(VSTEP_DATABASE.keys())
 
+# Quản lý vòng đời trạng thái của Streamlit
 if "selected_de" not in st.session_state: st.session_state.selected_de = DE_LIST_KEYS[0]
 if "current_section" not in st.session_state: st.session_state.current_section = "1️⃣ VSTEP Nghe"
 if "current_q_idx" not in st.session_state: st.session_state.current_q_idx = 0
 if "score" not in st.session_state: st.session_state.score = 0
 if "submitted_state" not in st.session_state: st.session_state.submitted_state = {}
 
-# --- SIDEBAR THANH SƯỜN ĐIỀU HÀNH ---
+# --- SIDEBAR KHU VỰC ĐIỀU HÀNH BẢN QUY CHUẨN ---
 st.sidebar.title("🎓 TRUNG TÂM ĐIỀU HÀNH VSTEP")
 
 current_de_idx = DE_LIST_KEYS.index(st.session_state.selected_de)
-chosen_de = st.sidebar.selectbox("Chọn Đề thi thực chiến:", DE_LIST_KEYS, index=current_de_idx, key="sb_de_v4_final")
+chosen_de = st.sidebar.selectbox("Chọn Đề thi thực chiến:", DE_LIST_KEYS, index=current_de_idx, key="sb_de_v5_core")
 if chosen_de != st.session_state.selected_de:
     st.session_state.selected_de = chosen_de
     st.session_state.current_q_idx = 0
     st.rerun()
 
 st.sidebar.markdown("### 🔢 PHẦN THI CHUYÊN BIỆT")
-if st.sidebar.button("1️⃣ VSTEP Nghe", use_container_width=True, key="btn_n_v4"):
+if st.sidebar.button("1️⃣ VSTEP Nghe", use_container_width=True, key="btn_n_v5"):
     st.session_state.current_section = "1️⃣ VSTEP Nghe"; st.session_state.current_q_idx = 0; st.rerun()
-if st.sidebar.button("2️⃣ VSTEP Đọc", use_container_width=True, key="btn_d_v4"):
+if st.sidebar.button("2️⃣ VSTEP Đọc", use_container_width=True, key="btn_d_v5"):
     st.session_state.current_section = "2️⃣ VSTEP Đọc"; st.session_state.current_q_idx = 0; st.rerun()
-if st.sidebar.button("3️⃣ VSTEP Viết", use_container_width=True, key="btn_v_v4"):
+if st.sidebar.button("3️⃣ VSTEP Viết", use_container_width=True, key="btn_v_v5"):
     st.session_state.current_section = "3️⃣ VSTEP Viết"; st.session_state.current_q_idx = 0; st.rerun()
-if st.sidebar.button("4️⃣ VSTEP Nói", use_container_width=True, key="btn_no_v4"):
+if st.sidebar.button("4️⃣ VSTEP Nói", use_container_width=True, key="btn_no_v5"):
     st.session_state.current_section = "4️⃣ VSTEP Nói"; st.session_state.current_q_idx = 0; st.rerun()
 
 questions_list = VSTEP_DATABASE[st.session_state.selected_de].get(st.session_state.current_section, [])
 max_questions = len(questions_list)
 
+# FIX ĐƠ PHÍM TUYỆT ĐỐI: Thuật toán chuyển câu phẳng tự động nhảy phân hệ khi chạm ngưỡng
 st.sidebar.markdown("---")
 st.sidebar.markdown("### 🧭 ĐIỀU HƯỚNG CÂU HỎI")
 
-if st.sidebar.button("⏮️ CÂU TRƯỚC", use_container_width=True, key="nav_prev_sidebar_v4"):
+if st.sidebar.button("⏮️ CÂU TRƯỚC", use_container_width=True, key="nav_prev_v5"):
     if st.session_state.current_q_idx > 0:
         st.session_state.current_q_idx -= 1
         st.rerun()
+    else:
+        sections = ["1️⃣ VSTEP Nghe", "2️⃣ VSTEP Đọc", "3️⃣ VSTEP Viết", "4️⃣ VSTEP Nói"]
+        curr_idx = sections.index(st.session_state.current_section)
+        if curr_idx > 0:
+            st.session_state.current_section = sections[curr_idx - 1]
+            prev_questions = VSTEP_DATABASE[st.session_state.selected_de].get(st.session_state.current_section, [])
+            st.session_state.current_q_idx = max(0, len(prev_questions) - 1)
+            st.rerun()
 
-if st.sidebar.button("⏭️ CÂU TIẾP", use_container_width=True, key="nav_next_sidebar_v4"):
+if st.sidebar.button("⏭️ CÂU TIẾP", use_container_width=True, key="nav_next_v5"):
     if st.session_state.current_q_idx < max_questions - 1:
         st.session_state.current_q_idx += 1
         st.rerun()
+    else:
+        # Nếu đã ở câu cuối cùng của phần thi này, tự động nhảy sang câu 1 của phần thi kế tiếp
+        sections = ["1️⃣ VSTEP Nghe", "2️⃣ VSTEP Đọc", "3️⃣ VSTEP Viết", "4️⃣ VSTEP Nói"]
+        curr_idx = sections.index(st.session_state.current_section)
+        if curr_idx < len(sections) - 1:
+            st.session_state.current_section = sections[curr_idx + 1]
+            st.session_state.current_q_idx = 0
+            st.rerun()
 
 if max_questions > 0:
     st.sidebar.markdown("### 🎯 PHÍM CHỌN CÂU NHANH")
@@ -179,38 +205,21 @@ if max_questions > 0:
     for i in range(max_questions):
         with slots[i]:
             lbl = f"*{i+1}*" if i == st.session_state.current_q_idx else f"{i+1}"
-            if st.button(lbl, key=f"qk_nav_v4_{i}", use_container_width=True):
+            if st.button(lbl, key=f"qk_nav_v5_{i}", use_container_width=True):
                 st.session_state.current_q_idx = i; st.rerun()
 
 # --- KHÔNG GIAN MAIN WORKSPACE CHÍNH DIỆN ---
 st.title("🎓 HỆ THỐNG KHẢO SÁT NĂNG LỰC TIẾNG ANH VSTEP CHUẨN SƯ PHẠM")
+st.caption(f"Trục vận hành phẳng chống kẹt phím | Mã đề: {st.session_state.selected_de}")
 st.markdown("---")
 
-current_de_pos = DE_LIST_KEYS.index(st.session_state.selected_de)
-if current_de_pos < len(DE_LIST_KEYS) - 1:
-    if st.button("🎉 THÀNH THẠO ĐỀ NÀY RỒI ── BẤM ĐỂ CHUYỂN SANG MÃ ĐỀ TIẾP THEO MỨC ĐỘ TIẾP THEO 🚀", use_container_width=True, key="btn_next_level_de_v4"):
-        st.session_state.selected_de = DE_LIST_KEYS[current_de_pos + 1]
-        st.session_state.current_q_idx = 0
-        st.rerun()
-
-st.markdown("---")
-
-# THANH TRẠNG THÁI TIẾN ĐỘ THÔNG MINH
-if "start_time" not in st.session_state:
-    st.session_state.start_time = time.time()
-elapsed = time.time() - st.session_state.start_time
-remaining = max(60 * 60 - elapsed, 0)
-mins, secs = divmod(int(remaining), 60)
-
-stat_col1, stat_col2, stat_col3 = st.columns(3)
+stat_col1, stat_col2 = st.columns(2)
 with stat_col1:
     st.markdown(f"**📊 Phân hệ hiện tại: {st.session_state.current_section}**")
     if max_questions > 0:
         st.progress((st.session_state.current_q_idx + 1) / max_questions)
 with stat_col2:
     st.metric(label="💯 Điểm Tích Lũy", value=f"{st.session_state.score} Điểm")
-with stat_col3:
-    st.metric(label="⏳ Đồng Hồ Đếm Ngược", value=f"{mins:02d}:{secs:02d} Phút")
 
 st.markdown("---")
 
@@ -221,7 +230,7 @@ else:
     q_key = f"{st.session_state.selected_de}_{st.session_state.current_section}_{active_q['id']}"
     is_submitted = q_key in st.session_state.submitted_state
 
-    # A. Phân hệ hiển thị tự luận tĩnh (Viết & Nói)
+    # A. Hiển thị phân hệ tự luận (Viết & Nói)
     if st.session_state.current_section in ["3️⃣ VSTEP Viết", "4️⃣ VSTEP Nói"]:
         st.warning(f"📋 **Yêu cầu phân hệ khảo sát tự luận ({active_q['type']}):**")
         st.markdown(active_q["prompt_html"], unsafe_allow_html=True)
@@ -239,9 +248,9 @@ else:
             st.markdown("---")
             st.markdown(active_q["analysis_html"], unsafe_allow_html=True)
     else:
-        # B. Phân hệ hiển thị trắc nghiệm đa câu hỏi (Nghe & Đọc)
+        # B. Hiển thị phân hệ trắc nghiệm đa câu hỏi (Nghe & Đọc)
         if st.session_state.current_section == "1️⃣ VSTEP Nghe":
-            st.info("🎧 **Nội dung nghe ghi âm mẫu chuyên nghiệp (Bấm Play để luyện tai):**")
+            st.info("🎧 **Nội dung nghe ghi âm mẫu chuyên nghiệp:**")
             tts_m = gTTS(text=active_q["raw_script"], lang='en', tld='com')
             fp_m = io.BytesIO()
             tts_m.write_to_fp(fp_m)
@@ -267,7 +276,7 @@ else:
         if not is_submitted:
             for key in active_q["options_html"].keys():
                 st.markdown(f"<div style='background-color:#F8FAFC; border-left:4px solid #1E3A8A; padding:12px; border-radius:6px; margin-top:10px;'>{active_q['options_html'][key]}</div>", unsafe_allow_html=True)
-                if st.button(f"👉 XÁC NHẬN CHỌN PHƯƠNG ÁN {key}", key=f"btn_card_{key}_{q_key}_v4_f", use_container_width=True):
+                if st.button(f"👉 XÁC NHẬN CHỌN PHƯƠNG ÁN {key}", key=f"btn_card_{key}_{q_key}_v5_run", use_container_width=True):
                     st.session_state.submitted_state[q_key] = key
                     if key == active_q["correct"]: st.session_state.score += 10
                     st.rerun()
