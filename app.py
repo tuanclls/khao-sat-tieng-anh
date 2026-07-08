@@ -257,7 +257,7 @@ with dash_col3:
 
 st.markdown("---")
 
-# 📥 TRÍCH XUẤT ĐỐI TƯỢNG ĐỀ BÀI HIỆN TẠI TỪ PYTHON DATABASE (ĐẢM BẢO LUÔN HIỂN THỊ)
+# 📥  ĐỀ BÀI HIỆN TẠI  (ĐẢM BẢO LUÔN HIỂN THỊ)
 active_q = questions_list[st.session_state.current_q_idx]
 
 # Thuật toán hoán đổi dữ liệu động để tạo biến thể song song khi chọn mã đề B hoặc C
@@ -299,20 +299,20 @@ elif st.session_state.current_section == "2️⃣ VSTEP Đọc":
     user_choice = st.radio("Chọn phương án trả lời:", display_options, key=f"read_radio_{active_q['id']}_{selected_de}")
 
 elif st.session_state.current_section == "3️⃣ VSTEP Viết":
-    st.warning("✍️ **ĐỀ BÀI LUẬN / THƯ TỰ LUẬN CHUẨN HÓA (WRITING TASK):**")
+    st.warning("✍️ **ĐỀ BÀI LUẬN / THƯ TỰ LUẬN  (WRITING TASK):**")
     st.markdown(f"📢 **Yêu cầu:** {display_prompt}")
     with st.expander("💡 Bấm vào đây để xem Khung xương cá từ vựng gợi ý (Sentence Scaffolding Templates)"):
         st.code(active_q.get("template", ""), language="markdown")
-    user_essay = st.text_area("Nhập nội dung bài viết tự luận của thầy cô tại đây (Hệ thống sẽ chuyển cho AI chấm điểm chuyên sâu):", height=250, key=f"write_area_{active_q['id']}")
+    user_essay = st.text_area("Nhập nội dung bài viết tự luận của thầy cô tại đây (Hệ thống sẽ chấm điểm ):", height=250, key=f"write_area_{active_q['id']}")
 
 elif st.session_state.current_section == "4️⃣ VSTEP Nói":
-    st.error("🎤 **ĐỀ THI NÓI THỰC CHIẾN (SPEAKING PROMPT):**")
+    st.error("🎤 **ĐỀ THI NÓI  (SPEAKING PROMPT):**")
     st.markdown(f"🗣️ **Yêu cầu phản xạ:** {display_prompt}")
     st.info("Thầy cô hãy bật nút Ghi âm ở thanh Micro bên dưới thanh điều hướng Sidebar để thu âm câu trả lời.")
 
 st.markdown("---")
 
-# 🏛️ HÀM GIAO TIẾP VỚI BỘ NÃO AI GEMINI ĐỂ THẨM ĐỊNH LỜI GIẢI VÀ ĐÓNG GÓI NÚT DIỄN GIẢI
+# 🏛️LỜI GIẢI VÀ T DIỄN GIẢI
 def get_model():
     genai.configure(api_key=api_key)
     return genai.GenerativeModel(MODEL_NAME, system_instruction=MASTER_PROMPT, safety_settings=SAFETY_SETTINGS)
@@ -320,7 +320,7 @@ def get_model():
 def extract_text_safely(response):
     try:
         if not response.candidates:
-            return None, "⚠️ Bộ lọc an toàn của API đã từ chối xử lý âm thanh nhiễu. Thầy/cô vui lòng thu âm to, rõ ràng hơn."
+            return None, "⚠️ Bộ lọc an toàn đã từ chối xử lý âm thanh nhiễu. Thầy/cô vui lòng thu âm to, rõ ràng hơn."
         candidate = response.candidates[0]
         parts_text = [part.text for part in candidate.content.parts if hasattr(part, "text") and part.text]
         return "".join(parts_text).strip(), None
@@ -342,7 +342,7 @@ def render_custom_vstep_message(content):
         with st.expander("=== BẤM VÀO ĐÂY ĐỂ BUNG SƠ ĐỒ TƯ DUY, CỤM TỪ VÀNG & TRA CỨU QUÁ KHỨ ==="):
             st.markdown(dien_giai_text, unsafe_allow_html=True)
 
-# 🚀 NÚT BẤM NỘP BÀI THỰC CHIẾN DÀNH CHO TRẮC NGHIỆM VÀ ĐOẠN VĂN VIẾT
+# 🚀  NỘP BÀI TRẮC NGHIỆM VÀ ĐOẠN VĂN VIẾT
 if st.session_state.current_section in ["1️⃣ VSTEP Nghe", "2️⃣ VSTEP Đọc", "3️⃣ VSTEP Viết"]:
     if st.button("🚀 NỘP BÀI THỰC CHIẾN", use_container_width=True):
         if not api_key:
@@ -406,7 +406,7 @@ if audio_data is not None:
             Toàn bộ câu mẫu và sửa lỗi bắt buộc trình bày 3 dòng interlinear ngắt hàng bằng thẻ <br>.
             Gói toàn bộ sơ đồ cấu trúc câu Mind Map phân nhánh vào cặp thẻ [DIEN_GIAI_START] và [DIEN_GIAI_END].
             """
-            with st.spinner("Hệ thống AI NLP đang xử lý và phân tách thính giác..."):
+            with st.spinner("Hệ thống  đang xử lý và phân tách thính giác..."):
                 try:
                     model = get_model()
                     contents = [{
@@ -424,10 +424,10 @@ if audio_data is not None:
                 except Exception as e:
                     st.error(f"Lỗi phân tích tệp micro: {e}")
 
-# 📜 KHÔNG GIAN BẢNG TIN CHAT HIỂN THỊ KẾT QUẢ VÀ HỘP CÔNG CỤ DIỄN GIẢI
+# 📜 BẢNG TIN  KẾT QUẢ VÀ  DIỄN GIẢI
 if st.session_state.messages:
     st.markdown("---")
-    st.markdown("### 🔔 KẾT QUẢ THẨM ĐỊNH VÀ SỬA LỖI TỪ AI CHUYÊN GIA:")
+    st.markdown("### 🔔 KẾT QUẢ:")
     for message in st.session_state.messages[-1:]:
         with st.chat_message(message["role"]):
             render_custom_vstep_message(message["content"])
