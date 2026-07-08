@@ -3,61 +3,67 @@ import google.generativeai as genai
 from gtts import gTTS
 import io
 import base64
-import time      # ✨ "Thời gian là vàng bạc" - Chúc thầy cô và học trò luôn trân quý từng phút giây mài giũa tri thức!
+import time      # ✨ "Thời gian là vàng bạc" - Kính chúc thầy cô và học viên luôn làm chủ mọi khoảnh khắc vàng ngọc.
 
-# ✨ "Hiền tài là nguyên khí của quốc gia." - Giáo dục là nền tảng chắp cánh cho mọi ước mơ sư phạm đại tài.
+# ✨ "Hiền tài là nguyên khí của quốc gia" - Thiết lập không gian khảo thí VSTEP chuẩn sư phạm.
 st.set_page_config(
-    page_title="Hệ Thống Khảo Sát Tiếng Anh Cho Giáo Viên",
+    page_title="Hệ Thống Khảo Sát VSTEP Tiếng Anh Cho Giáo Viên",
     page_icon="🎓",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
-# 🧠 "Muốn biết phải hỏi, muốn giỏi phải học." - Hệ thống tích hợp toàn bộ kho đề bài đọc, chép chính tả và văn nghị luận mới nạp.
+# 🧠 BỘ NÃO AI VSTEP SIÊU THỰC CHIẾN - Tích hợp dữ liệu thính giác thông minh và kho đề mẫu chính thức.
 MASTER_PROMPT = """
 # ROLE & PERSONALITY
-You are the official interactive "English Proficiency Assessment Application for Teachers". Your absolute objective is to evaluate and train the teacher (addressed respectfully as "thầy cô") to effortlessly pass their exam using Reverse Engineering and Real-Time Visual Feedback.
+You are the official interactive "VSTEP Proficiency Assessment Application". Your absolute objective is to evaluate and train the teacher (addressed respectfully as "thầy cô") to master the VSTEP exam using Real-Time Adaptive Feedback.
 
-# NUMERIC NAVIGATION SYSTEM
-You must listen to numeric inputs from the user or system to route the exam sections immediately:
-- Input `1`: SECTION 1: LISTENING & DICTATION (Based on the text bank below)
-- Input `2`: SECTION 2: READING ALOUD (Based on the text bank below)
-- Input `3`: SECTION 3: WRITING (Opinion Paragraph)
-- Input `4`: SECTION 4: SPEAKING (Opinion Presentation)
+# NUMERIC NAVIGATION SYSTEM (VSTEP STRUCTURE)
+Route the exam sections immediately based on numeric inputs:
+- Input `1`: SECTION 1: LISTENING (Based on official VSTEP sample text bank below)
+- Input `2`: SECTION 2: READING (Based on official VSTEP sample text bank below)
+- Input `3`: SECTION 3: WRITING (VSTEP Task 1 Email & Task 2 Essay)
+- Input `4`: SECTION 4: SPEAKING (Social Interaction, Solution Discussion & Topic Development)
 
-# INTERACTIVE WORKFLOW & SEQUENTIAL QUESTIONS
-1. Present the questions ONE BY ONE strictly based on the active index. Do not show multiple questions.
-2. For reading/listening items, show ONLY the prompt using the 3-LINE INTERLINEAR FORMAT.
-3. Hide explanations, answers, and syntax anatomy until the user submits their answer choice (A, B, C, D) or record input. Once submitted, reveal the results immediately with deep feedback.
+# SEQUENTIAL DELIVERY WORKFLOW
+1. Present exam items ONE BY ONE strictly. Do not display multiple questions or mix sections.
+2. Hide answer keys, comprehensive syntax breakdowns, and explanations until the user submits their option (A, B, C, D) or record text. Once submitted, reveal deep pedagogical feedback immediately.
 
-# MANDATORY INTERLINEAR 3-LINE LAYOUT (STRICTLY ENFORCED)
-Every time you display ANY English sentences, questions, or templates, you MUST format it strictly line-by-line:
-- Line 1: [📦 ENG] <English text>
-- Line 2: [🎵 IPA] <Standard IPA transcription with / for rhythmic chunk pauses>
-- Line 3: [🇻🇳 VIE] <Contextual Vietnamese translation>
+# MANDATORY INTERLINEAR 3-LINE SEPARATE LAYOUT (STRICTLY ENFORCED)
+Whenever you display ANY English material, sample answers, or sentences, you MUST print them in three strictly SEPARATE lines with clear structural markings:
+Line 1: [📦 ENG] <English text>
+Line 2: [🎵 IPA] <Standard IPA transcription with / for rhythmic pauses>
+Line 3: [🇻🇳 VIE] <Contextual Vietnamese translation>
 
-# SPEECH-TO-TEXT PRONUNCIATION JUDGEMENT (RED ERROR COLOR RULE)
-When evaluating the teacher's spoken audio directly via microphone, compare their audio word-by-word with the target sentence. Render the visual text result using a custom HTML block:
-1. For words pronounced correctly: Display clearly using black/dark blue (`.txt-correct`).
-2. For words MISSPRENOUNCED or SKIPPED entirely: You MUST change its color to bright RED (`.txt-wrong`), and render its standard red IPA phonetic transcription directly underneath (`.ipa-practice`) so they know exactly what they missed.
+# SMART MICROPHONE AUDIO FILTRATION PROTOCOL (HEAR CLEARLY RULE)
+When analyzing the raw spoken audio recorded by the user, act as an advanced audio-linguistic filter:
+1. [SPEECH-TO-TEXT FILTRATION]: Predict and transcribe what the user said. Only write down words that are HEARD CLEARLY and intelligibly. If a word is mumbled, heavily masked by background noise, or whispered unreadably, do NOT write or include it in the transcription text at all.
+2. [VISUAL ERROR GRAPHICS]: Render the clearly heard transcribed text using a clean custom HTML block. Compare it word-by-word against the standard target sentence:
+   - Correctly pronounced words: Display in dark blue/black (`.txt-correct`).
+   - Mispronounced or entirely skipped targeted words: You MUST color them in bright RED (`.txt-wrong`), and insert their standard correct IPA phonetics directly underneath (`.ipa-practice`) so they can practice targeted fixing.
 
-# EMBEDDED SYLLABUS TEXT BANK
-Use this official material for generation:
-- SECTION 1 (Dictation/Short Sentences): "I went shopping with my friends today.", "She's my favorite singer.", "I can't reach the top shelf.", "We can't do this without you.", "We need three eggs and two onions.", "This room is a mess."
-- SECTION 2 (Reading Aloud Paragraphs): 
-  * Topic 1 (Email): "A lot of people use email to communicate. There are many benefits to using email..."
-  * Topic 2 (Coffee): "Many people like to drink coffee in the morning. In fact, coffee is one of the most popular drinks..."
-  * Topic 3 (Pilot): "A pilot’s job is to fly an airplane. Pilots are needed around the world to fly many different types..."
-  * Topic 4 (Gardens): "Lots of people plant gardens. Some people plant new flowers every year..."
-  * Topic 5 (Library): "Typically a public library can be used by anyone. Many countries have public libraries..."
-- SECTION 3 & 4 (Writing & Speaking Essays): 
-  * "Should technology play a larger role in classroom learning?"
-  * "Should homework be given to students every day?"
-  * "What are the qualities of an effective teacher?"
-  * "Should schools focus more on practical skills than academic subjects?"
+# EMBEDDED OFFICIAL VSTEP MINH HOA MATERIAL BANK
+Use this official syllabus text for text generation and assessment routing:
+- SECTION 1: LISTENING 
+  * Q1: "How many languages are taught at Hanoi International Language School?" (A. 1 | B. 2 | C. 3 | B. 4)
+  * Q2: "What is the boarding time of Flight VN178?" (A. 3.30 | B. 3.45 | C. 4.15 | D. 4.45)
+  * Q3: "What will be happening in Lecture hall 4 next Monday?" (A. An art workshop | B. An art exhibition | C. A history lesson | D. A talk about history of art)
+- SECTION 2: READING
+  * Passage 1: Nature's balance and pandemics. "Diseases are a natural part of life on Earth. If there were no diseases, the population would grow too quickly..." (Focus on Marburg virus vs 1918 flu statistics).
+  * Passage 2: Japanese Dress Culture. "Kimonos came to Japan from China. They were worn underneath clothes as an undergarment. Kimono was the Japanese word for clothing..."
+- SECTION 3: WRITING
+  * Task 1: Email responding to Jane about friend An taking a course in London this summer.
+  * Task 2: Essay evaluating the positive and negative effects of tourism on local communities or City vs Countryside living (At least 250 words).
+- SECTION 4: SPEAKING
+  * Part 1 (Social Interaction): Free time activities (TV channels, reading books) and neighborhood preferences.
+  * Part 2 (Solution Discussion): Moving a group from Danang to Hanoi. Choices: Train, Plane, or Coach.
+  * Part 3 (Topic Development): "Reading habit should be encouraged among teenagers." (Branches: increases knowledge, reduces stress, improves memory).
+
+# AUDIO REGENERATION COMPLIANCE TAGS
+For every turn of generation containing an English listening task or oral model answer, duplicate the pure target English sentence inside `[AUDIO_START] target text [AUDIO_END]` at the very end of your block. This is critical to maintain the functionality of the gTTS engine.
 """
 
-# 💾 "Trẻ vui học hỏi, già thích suy tư." - Cấu trúc lưu trữ trạng thái phòng thi bền vững, chống lỗi quay vòng.
+# 💾 HỆ THỐNG LƯU TRỮ PHÒNG THI KIÊN CỐ - Chống đơ, chống bẫy lặp quay vòng dữ liệu.
 if "messages" not in st.session_state:
     st.session_state.messages = []
 if "current_q" not in st.session_state:
@@ -67,38 +73,36 @@ if "score" not in st.session_state:
 if "start_time" not in st.session_state:
     st.session_state.start_time = time.time()
 
-# ⚙️ "Muốn sang thì bắc cầu Kiều, muốn con hay chữ thì yêu lấy thầy." - Bản điều hướng trợ thủ đắc lực nâng bước thầy cô.
-st.sidebar.title("⚙️ BẢN ĐIỀU HƯỚNG PHÒNG THI")
+# ⚙️ BẢN ĐIỀU HƯỚNG PHÒNG THI SƯ PHẠM
+st.sidebar.title("⚙️ ĐIỀU HÀNH THI VSTEP")
 
 if "GEMINI_API_KEY" in st.secrets:
     api_key = st.secrets["GEMINI_API_KEY"]
 else:
     api_key = st.sidebar.text_input("1. Nhập Gemini API Key:", type="password")
 
-font_size = st.sidebar.slider("2. NÚT CHỮ T (Kích thước chữ)", 14, 24, 16)
+font_size = st.sidebar.slider("2. KÍCH THƯỚC CHỮ (Nút chữ T)", 14, 24, 16)
 st.markdown(f"<style>.stMarkdown, p, li, .stChatMessage {{ font-size: {font_size}px !important; }}</style>", unsafe_allow_html=True)
 
-# 🔢 "Đi một ngày đàng, học một sàng khôn." - Phím số tắt chuyển dịch nhanh chóng các phân hệ bài làm.
-st.sidebar.markdown("### 🔢 CHỌN NHANH PHẦN THI")
+# 🔢 PHÍM TẮT CHUYỂN NHANH PHẦN THI THEO ĐỀ MẪU VSTEP
+st.sidebar.markdown("### 🔢 PHẦN THI THEO ĐỀ MẪU")
 col_s1, col_s2 = st.sidebar.columns(2)
 nav_action = None
 with col_s1:
-    if st.sidebar.button("1️⃣ Phần Nghe", use_container_width=True): nav_action = "1"
-    if st.sidebar.button("3️⃣ Phần Viết", use_container_width=True): nav_action = "3"
+    if st.sidebar.button("1️⃣ VSTEP Nghe", use_container_width=True): nav_action = "1"
+    if st.sidebar.button("3️⃣ VSTEP Viết", use_container_width=True): nav_action = "3"
 with col_s2:
-    if st.sidebar.button("2️⃣ Phần Đọc", use_container_width=True): nav_action = "2"
-    if st.sidebar.button("4️⃣ Phần Nói", use_container_width=True): nav_action = "4"
+    if st.sidebar.button("2️⃣ VSTEP Đọc", use_container_width=True): nav_action = "2"
+    if st.sidebar.button("4️⃣ VSTEP Nói", use_container_width=True): nav_action = "4"
 
 st.sidebar.markdown("---")
-st.sidebar.markdown("### 🧭 ĐIỀU HƯỚNG CÂU HỎI LẦN LƯỢT")
+st.sidebar.markdown("### 🧭 ĐIỀU HƯỚNG THI TUẦN TỰ")
 
-# ⏭️ "Có công mài sắt, có ngày nên kim." - Nút chuyển tiếp hiển thị câu hỏi tuần tự theo tiến trình sư phạm.
 if st.sidebar.button("⏭️ CÂU TIẾP THEO", use_container_width=True):
     st.session_state.current_q = min(st.session_state.current_q + 1, 12)
     st.session_state.score = min(st.session_state.score + 5, 100)
-    nav_action = f"Hãy đưa ra câu hỏi số {st.session_state.current_q} theo lộ trình và áp dụng cấu trúc song song 3 dòng interlinear."
+    nav_action = f"Hãy đưa ra câu hỏi VSTEP tiếp theo số {st.session_state.current_q} và tuân thủ tuyệt đối quy tắc 3 dòng phân tách biệt lập."
 
-# 🔄 "Học nhi thời tập chi, bất diệc duyệt hồ." - Khởi động lại trạng thái ban đầu của bài khảo sát.
 if st.sidebar.button("🔄 LÀM LẠI TỪ ĐẦU", use_container_width=True):
     st.session_state.current_q = 1
     st.session_state.score = 0
@@ -106,31 +110,31 @@ if st.sidebar.button("🔄 LÀM LẠI TỪ ĐẦU", use_container_width=True):
     nav_action = "VỀ MENU CHÍNH"
 
 st.sidebar.markdown("---")
-st.sidebar.markdown("### 🎤 PHẦN THI NÓI - THU ÂM")
-audio_data = st.sidebar.audio_input("Bấm nút tròn để ghi âm bài làm trực tiếp:")
+st.sidebar.markdown("### 🎤 THI NÓI VSTEP VÀ PHÁT ÂM")
+audio_data = st.sidebar.audio_input("Bấm nút tròn để tiến hành thu âm trực tiếp:")
 
-# 🏛️ "Vì lợi ích mười năm thì phải trồng cây, vì lợi ích trăm năm thì phải trồng người." - Giảng đường số hóa hiện đại.
-st.title("🎓 ỨNG DỤNG KHẢO SÁT TIẾNG ANH CHO GIÁO VIÊN")
-st.caption("Giao diện tối ưu Cloud Run & Win.exe - Cấu trúc 3 dòng song song & Công nghệ bôi ĐỎ từ phát âm lỗi")
+# 🏛️ KHÔNG GIAN KHẢO THÍ SỐ HÓA THỰC CHIẾN VSTEP
+st.title("🎓 ỨNG DỤNG KHẢO SÁT TIẾNG ANH VSTEP")
+st.caption("Phiên bản Đề Minh Họa Gốc - Cấu trúc 3 dòng biệt lập biệt li - Bộ lọc thính giác thông minh nghe rõ mới ghi chữ")
 st.markdown("---")
 
-# 📊 "Ngọc kia chuốt mới nên đồ, người ta học mới biết cơ biết điều." - Bảng tiến độ và đồng hồ đếm ngược trực quan.
+# 📊 BẢNG THEO DÕI TIẾN ĐỘ THỜI GIAN VÀ ĐIỂM SỐ SƯ PHẠM
 elapsed_time = time.time() - st.session_state.start_time
-remaining_time = max(60 * 60 - elapsed_time, 0)
+remaining_time = max(50 * 60 - elapsed_time, 0) # Khung thời gian VSTEP quy đổi tổng thể
 mins, secs = divmod(int(remaining_time), 60)
 
 dash_col1, dash_col2, dash_col3 = st.columns(3)
 with dash_col1:
-    st.metric(label="📈 Tiến Độ Bài Làm", value=f"Câu {st.session_state.current_q} / 12")
+    st.metric(label="📈 Tiến Độ Đề Thi", value=f"Câu {st.session_state.current_q} / 12")
     st.progress(st.session_state.current_q / 12)
 with dash_col2:
-    st.metric(label="💯 Thang Điểm Hiện Tại", value=f"{st.session_state.score} / 100 Điểm")
+    st.metric(label="💯 Điểm Số Ước Tính", value=f"{st.session_state.score} / 100 Điểm")
 with dash_col3:
     st.metric(label="⏳ Thời Gian Còn Lại", value=f"{mins:02d}:{secs:02d} Phút")
 
 st.markdown("---")
 
-# 🌟 "Vạn sự khởi đầu nan." - Tự động kích hoạt hệ thống lời chào mở màn từ bộ não siêu trí tuệ nhân tạo.
+# 🌟 KHỞI TẠO LỜI CHÀO PHÒNG THI TỰ ĐỘNG
 if "initialized" not in st.session_state and api_key:
     try:
         genai.configure(api_key=api_key)
@@ -139,11 +143,11 @@ if "initialized" not in st.session_state and api_key:
         st.session_state.messages.append({"role": "assistant", "content": init_res.text})
         st.session_state.initialized = True
     except Exception as e:
-        st.sidebar.error(f"Lỗi kết nối hệ thống: {e}")
+        st.sidebar.error(f"Lỗi liên kết hệ thống: {e}")
 
-# 🎵 "Thánh thót như tiếng đàn cầm." - Nút phát âm thanh tinh tế, tắt chế độ tự động chạy (Autoplay=False) giúp người học làm chủ.
+# 🎵 TÁI SINH NÚT PHÁT ÂM THANH CHỦ ĐỘNG (AUTOPLAY=FALSE GIÚP THẦY CÔ LÀM CHỦ)
 def play_audio_safely(text_content):
-    if "[AUDIO_START]" in text_content:
+    if "[AUDIO_START]" in text_content and "[AUDIO_END]" in text_content:
         try:
             start_idx = text_content.find("[AUDIO_START]") + len("[AUDIO_START]")
             end_idx = text_content.find("[AUDIO_END]")
@@ -154,19 +158,19 @@ def play_audio_safely(text_content):
                 tts.write_to_fp(fp)
                 fp.seek(0)
                 b64_audio = base64.b64encode(fp.read()).decode()
-                audio_html = f'<audio controls src="data:audio/mp3;base64,{b64_audio}" style="width: 100%; margin-top: 10px;"></audio>'
+                audio_html = f'<audio controls src="data:audio/mp3;base64,{b64_audio}" style="width: 100%; margin-top: 12px; margin-bottom: 12px;"></audio>'
                 st.markdown(audio_html, unsafe_allow_html=True)
         except Exception as e:
-            st.error(f"Lỗi tạo âm thanh: {e}")
+            st.error(f"Lỗi tạo thanh phát âm thanh: {e}")
 
-# 📜 "Học đi đôi với hành, kiến thức khai sáng tương lai." - Hiển thị dòng lịch sử bài làm bám sát cấu trúc trực quan.
+# 📜 HIỂN THỊ DÒNG LỊCH SỬ KHẢO THÍ CHUẨN ĐỒ HỌA SƯ PHẠM
 for message in st.session_state.messages:
     with st.chat_message(message["role"]):
         st.markdown(message["content"], unsafe_allow_html=True)
         if message["role"] == "assistant":
             play_audio_safely(message["content"])
 
-# 🚀 "Đường tuy ngắn không đi không đến, việc tuy nhỏ không làm không nên." - Cổng truyền dữ liệu byte trực tiếp hỏa tốc.
+# 🚀 CỔNG TRUYỀN DỮ LIỆU ĐƯỜNG TRUYỀN HỎA TỐC BIÊN NGOÀI
 def send_exam_data(prompt_text, audio_file=None, is_nav=False):
     if not api_key:
         st.sidebar.warning("Thầy/cô vui lòng điền mã API Key ở góc trái để bắt đầu kích hoạt bài thi!")
@@ -186,7 +190,7 @@ def send_exam_data(prompt_text, audio_file=None, is_nav=False):
             formatted_contents.append({"role": role, "parts": [msg["content"]]})
         
         if audio_file is not None:
-            st.session_state.messages.append({"role": "user", "content": "🎤 [Thầy cô đã nộp bài thi nói bằng giọng âm trực tiếp]"})
+            st.session_state.messages.append({"role": "user", "content": "🎤 [Hệ thống nhận tệp âm thanh trực tiếp từ Microphone]"})
             formatted_contents.append({
                 "role": "user",
                 "parts": [
@@ -204,47 +208,55 @@ def send_exam_data(prompt_text, audio_file=None, is_nav=False):
             formatted_contents.append({"role": "user", "parts": [prompt_text]})
         
         with st.chat_message("assistant"):
-            with st.spinner("Hệ thống đang giải phẫu cấu trúc câu chi tiết..."):
+            with st.spinner("Hệ thống VSTEP đang phân tích sóng âm và bóc tách dữ liệu câu..."):
                 response = model.generate_content(contents=formatted_contents)
                 response_text = response.text
                 st.markdown(response_text, unsafe_allow_html=True)
                 play_audio_safely(response_text)
                 
     except Exception as e:
-        st.error(f"❌ Hệ thống thông báo lỗi đường truyền: {e}. Vui lòng nhấn F5 để làm mới phòng thi.")
+        st.error(f"❌ Hệ thống thông báo lỗi đường truyền: {e}. Vui lòng kiểm tra lại thiết bị thu âm hoặc API.")
         return
 
-    # 🛠️ KIỂM SOÁT THOÁT KHỐI: Đưa lệnh ghi bộ nhớ ra ngoài biên để bẻ gãy hoàn toàn lỗi đơ, lỗi quay vòng vòng.
+    # KÍCH HOẠT BIÊN NGOÀI KHỐI - Bẻ gãy hoàn toàn bẫy lỗi treo đơ giao diện
     if response_text:
         st.session_state.messages.append({"role": "assistant", "content": response_text})
         st.rerun()
 
-# 🧭 Kích hoạt luồng điều hướng câu hỏi hành chính.
+# Kích hoạt luồng điều hướng nút hành chính phụ trợ
 if nav_action:
     send_exam_data(nav_action, is_nav=True)
 
-# 🚀 Nộp bài thi nói: Ép hiển thị chữ nghe được, từ nào sai nhuộm màu ĐỎ rực rỡ và đẩy IPA xuống dưới chân từ đó.
+# 🚀 NỘP BÀI THI NÓI VSTEP - Thuật toán lọc âm thanh thông minh và thiết lập đồ họa màu đỏ sửa sai
 if audio_data is not None:
-    if st.sidebar.button("🚀 NỘP BÀI THI NÓI", use_container_width=True):
-        speech_command = """
-        Đây là dữ liệu giọng nói trực tiếp của tôi. Nhiệm vụ của bạn:
-        1. Hãy phân tích bài đọc/bài nói từng từ một so với câu mẫu. Xuất ra một đoạn mã HTML duy nhất (không chứa ký tự ```html) áp dụng cấu trúc phong cách CSS sau:
+    if st.sidebar.button("🚀 NỘP BÀI THI NÓI VSTEP", use_container_width=True):
+        vstep_speech_command = """
+        Đây là dữ liệu giọng nói của tôi từ micro. Hãy xử lý nghiêm ngặt theo các bước sau:
+        
+        1. [DỰ ĐOÁN VÀ BÓC BĂNG PHÁN ĐOÁN AI]: Hãy đóng vai trò bộ lọc thính giác thông minh. Hãy chỉ ghi ra chữ (transcribe) những từ ngữ được tôi phát âm RÕ ÂM, rõ từ và nghe rõ ràng mạch lạc. Nếu từ nào thều thào, nói lắp, phát âm quá nhỏ hoặc bị tiếng ồn môi trường che khuất, tuyệt đối KHÔNG ĐƯỢC GHI RA.
+        
+        2. [MÃ HTML ĐỒ HỌA SO SÁNH PHÁT ÂM]: So sánh đoạn từ nghe rõ được với câu chuẩn của đề thi VSTEP. Trả về một khối mã HTML duy nhất (không bọc trong ký tự dấu nháy ```html) áp dụng CSS sau:
            <style>
               .word-group { display: inline-block; text-align: center; margin-right: 14px; margin-bottom: 18px; vertical-align: top; }
-              .txt-correct { font-size: 19px; color: #2c3e50; font-weight: bold; }
-              .txt-wrong { font-size: 19px; color: #e74c3c; font-weight: bold; } /* 🔴 NHUỘM MÀU ĐỎ CHO TỪ PHÁT ÂM SAI HOẶC BỎ QUA */
-              .ipa-practice { font-size: 13px; color: #c0392b; font-family: monospace; display: block; margin-top: 5px; }
+              .txt-correct { font-size: 19px; color: #2e7d32; font-weight: bold; }
+              .txt-wrong { font-size: 19px; color: #d32f2f; font-weight: bold; }
+              .ipa-practice { font-size: 13px; color: #c62828; font-family: monospace; display: block; margin-top: 5px; }
            </style>
-        2. Duyệt từng từ trong câu:
-           - Từ nào phát âm ĐÚNG: bọc trong <div class='word-group'><span class='txt-correct'>Từ_Gốc</span></div>
-           - Từ nào phát âm SAI hoặc BỊ BỎ QUA: nhuộm màu đỏ bằng cách bọc trong <div class='word-group'><span class='txt-wrong'>Từ_Gốc</span><span class='ipa-practice'>/Phiên_Âm_Mẫu/</span></div>
-        3. Sau khối chữ HTML, hãy hiển thị đáp án, bảng giải thích chi tiết cấu trúc ngữ pháp và mô tả cú pháp dưới dạng thiết kế 3 dòng interlinear (ENG -> IPA -> VIE). Chấm điểm trên thang điểm 100.
+           - Từ phát âm CHUẨN: bọc trong <div class='word-group'><span class='txt-correct'>Từ_Gốc</span></div>
+           - Từ phát âm SAI hoặc BỊ BỎ QUA trong câu mẫu: Nhuộm màu ĐỎ rực rỡ bằng cách bọc trong <div class='word-group'><span class='txt-wrong'>Từ_Gốc</span><span class='ipa-practice'>/Phiên_Âm_Chuẩn/</span></div>
+        
+        3. [BIỂU DIỄN 3 DÒNG BIỆT LẬP TUYỆT ĐỐI]: Ngay bên dưới khối HTML sửa lỗi, hãy trình bày bài mẫu chuẩn, lời giải thích ngữ pháp chi tiết theo đúng thiết kế 3 dòng tách biệt biệt li:
+           Dòng 1: [📦 ENG] <Câu Anh mẫu tiếng>
+           Dòng 2: [🎵 IPA] <Phiên chuẩn quốc tế âm>
+           Dòng 3: [🇻🇳 VIE] <Bản Việt bám dịch họa minh nghĩa sát tiếng đề>
+           
+        4. [TÁI SINH NÚT PHÁT ÂM THANH]: Đảm bảo sao chép lại câu tiếng Anh chuẩn bọc trong cặp thẻ [AUDIO_START] Câu tiếng Anh chuẩn [AUDIO_END] đặt ở cuối thông điệp để dựng lại nút phát thanh cho người học.
         """
-        send_exam_data(speech_command, audio_file=audio_data)
+        send_exam_data(vstep_speech_command, audio_file=audio_data)
 
-# 📝 "Nét chữ nết người, trí tuệ tỏa sáng." - Khung nhận câu trả lời (Gõ số nhanh 1, 2, 3, 4 hoặc dán đáp án trắc nghiệm/bài viết).
-if text_input := st.chat_input("Nhập phím số phần thi (1, 2, 3, 4), đáp án trắc nghiệm hoặc bài viết tại đây..."):  
+# 📝 KHUNG TIẾP NHẬN BÀI LÀM TRẮC NGHIỆM VÀ BÀI VIẾT TỰ LUẬN VSTEP
+if text_input := st.chat_input("Nhập đáp án trắc nghiệm (A,B,C,D), số phân hệ (1,2,3,4) hoặc nội dung bài viết luận tại đây..."):  
     if text_input.strip() in ["1", "2", "3", "4"]:
         send_exam_data(text_input.strip(), is_nav=True)
     else:
-        send_exam_data(f"Tôi chọn đáp án/nộp bài viết là: {text_input}. Hãy kiểm tra tính chính xác, hiển thị lời giải thích cú pháp chi tiết và áp dụng bố cục thiết kế 3 dòng interlinear dọc (Dòng 1: Tiếng Anh, Dòng 2: Phiên âm IPA, Dòng 3: Dịch nghĩa).")
+        send_exam_data(f"Tôi nộp đáp án/bài làm tự luận VSTEP là: {text_input}. Hãy thẩm định chuyên môn, phân tích sâu cấu trúc câu và trình bày kết quả theo đúng thiết kế bố cục 3 dòng biệt lập hoàn toàn (Dòng 1: Tiếng Anh, Dòng 2: Phiên âm IPA, Dòng 3: Dịch nghĩa). Đừng quên nhúng mã [AUDIO_START] nội dung tiếng Anh chuẩn [AUDIO_END] ở cuối cùng để hiển thị lại nút bấm phát âm thanh chủ động.")
